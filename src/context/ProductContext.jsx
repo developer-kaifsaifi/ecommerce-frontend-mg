@@ -19,7 +19,7 @@ export const ProductProvider = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `${server}/api/product/all?search=${search}&category=${category}&sortByPrice=${price}&page=${page}`
+        `${server}/product/all?search=${search}&category=${category}&sortByPrice=${price}&page=${page}`
       );
 
       setProducts(data.products);
@@ -39,7 +39,7 @@ export const ProductProvider = ({ children }) => {
   async function fetchProduct(id) {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${server}/api/product/${id}`);
+      const { data } = await axios.get(`${server}/product/${id}`);
 
       setProduct(data.product);
       setRelatedProduct(data.relatedProduct);
