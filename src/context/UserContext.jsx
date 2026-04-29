@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { server } from "../main";
+import { server } from "../main.jsx";
 import Cookies from "js-cookie"
 
 

@@ -1,4 +1,4 @@
-import { server } from "./../../main"
+import { server } from "./../../main.jsx"
 import axios from "axios";
 import Cookies from "js-cookie";
 import  { useEffect, useState } from "react";
@@ -6,7 +6,7 @@ import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
-import LoaderMG from "../LoaderMG";
+import LoaderMG from "../LoaderMG.jsx";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);

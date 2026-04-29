@@ -1,4 +1,4 @@
-import { CartData } from "../context/CartContext";
+import { CartData } from "../context/CartContext.jsx";
 import {
   ShoppingBag,
   Trash2,

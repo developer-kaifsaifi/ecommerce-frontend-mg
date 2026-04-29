@@ -1,5 +1,5 @@
-import { CartData } from "@/context/CartContext";
-import { server } from "@/main";
+import { CartData } from "@/context/CartContext.jsx";
+import { server } from "@/main.jsx";
 
 import axios from "axios";
 import Cookies from "js-cookie";

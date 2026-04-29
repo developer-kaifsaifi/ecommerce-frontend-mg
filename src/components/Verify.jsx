@@ -1,8 +1,8 @@
 import { Mail, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { UserData } from "../context/UserContext";
+import { UserData } from "../context/UserContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 
 export default function Verify() {
 

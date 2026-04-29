@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import Footer from "../components/Footer";
+
+import Hero from "../components/Hero.jsx";
+
 import { useNavigate } from "react-router-dom";
-import { ProductData } from "../context/ProductContext";
-import ProductCard from "../components/ProductCard";
-import LoaderMG from "../components/LoaderMG";
-import { motion, useMotionValue, useSpring } from "framer-motion"; // Make sure to use 'framer-motion' 
+import { ProductData } from "../context/ProductContext.jsx";
+import ProductCard from "../components/ProductCard.jsx";
+import LoaderMG from "../components/LoaderMG.jsx";
+ 
 
 export default function Home() {
   const navigate = useNavigate();

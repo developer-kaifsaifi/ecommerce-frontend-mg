@@ -17,17 +17,17 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {toast } from "react-toastify";
 
-import { ProductData } from "../context/ProductContext";
-import { CartData } from "../context/CartContext";
-import { UserData } from "../context/UserContext";
+import { ProductData } from "../context/ProductContext.jsx";
+import { CartData } from "../context/CartContext.jsx";
+import { UserData } from "../context/UserContext.jsx";
 
-import LoaderMG from "../components/LoaderMG";
-import ProductCard from "../components/ProductCard";
+import LoaderMG from "../components/LoaderMG.jsx";
+import ProductCard from "../components/ProductCard.jsx";
 
 import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
-import { categories, server } from "@/main";
+import { categories, server } from "@/main.jsx";
 
 export default function ProductPage() {
   const { id } = useParams();

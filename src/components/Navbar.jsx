@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
-import { UserData } from "../context/UserContext";
+import { UserData } from "../context/UserContext.jsx";
 import { useState } from "react";
-import { CartData } from "../context/CartContext";
+import { CartData } from "../context/CartContext.jsx";
 
 export default function Navbar() {
   const navigate = useNavigate();

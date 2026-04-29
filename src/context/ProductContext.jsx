@@ -1,4 +1,4 @@
-import { server } from "@/main";
+import { server } from "@/main.jsx";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 

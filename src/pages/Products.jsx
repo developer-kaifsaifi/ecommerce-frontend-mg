@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ProductData } from "../context/ProductContext";
-import { Filter, X, ChevronLeft, ChevronRight, ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
-import ProductCard from "../components/ProductCard";
-import LoaderMG from "../components/LoaderMG";
+import { ProductData } from "../context/ProductContext.jsx";
+import { Filter, X,  ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+import ProductCard from "../components/ProductCard.jsx";
+import LoaderMG from "../components/LoaderMG.jsx";
 
 export default function Products() {
   const {

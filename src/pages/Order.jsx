@@ -1,5 +1,5 @@
 
-import { server } from "@/main";
+import { server } from "@/main.jsx";
 
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { motion } from "motion/react";
-import LoaderMG from "../components/LoaderMG";
+import LoaderMG from "../components/LoaderMG.jsx";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);

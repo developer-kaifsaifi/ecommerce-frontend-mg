@@ -1,5 +1,5 @@
-import { UserData } from "../context/UserContext";
-import { server } from "../main";
+import { UserData } from "../context/UserContext.jsx";
+import { server } from "../main.jsx";
 
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -11,7 +11,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Printer, ShoppingBag, Truck } from "lucide-react";
 
 import { motion } from "motion/react";
-import LoaderMG from "../components/LoaderMG";
+import LoaderMG from "../components/LoaderMG.jsx";
 
 const OrderPage = () => {
   const { id } = useParams();

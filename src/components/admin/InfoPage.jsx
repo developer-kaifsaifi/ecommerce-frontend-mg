@@ -1,4 +1,4 @@
-import { server } from "@/main";
+import { server } from "@/main.jsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";

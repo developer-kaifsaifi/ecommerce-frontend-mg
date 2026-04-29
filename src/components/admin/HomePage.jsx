@@ -1,14 +1,14 @@
-import { ProductData } from "@/context/ProductContext";
+import { ProductData } from "@/context/ProductContext.jsx";
 import  { useState } from "react";
 
-import ProductCard from "../ProductCard";
+import ProductCard from "../ProductCard.jsx";
 
-import { categories, server } from "@/main";
+import { categories, server } from "@/main.jsx";
 
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import LoaderMG from "../LoaderMG";
+import LoaderMG from "../LoaderMG.jsx";
 
 const HomePage = () => {
   const { products, page, setPage, fetchProducts, loading, totalPages } =

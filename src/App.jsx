@@ -3,27 +3,27 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 
 
-import Verify from './components/Verify'
-import { UserData } from './context/UserContext'
-import LoaderMG from './components/LoaderMG'
-import Products from './pages/Products'
+import Verify from './components/Verify.jsx'
+import { UserData } from './context/UserContext.jsx'
+import LoaderMG from './components/LoaderMG.jsx'
+import Products from './pages/Products.jsx'
 
-import NotFound from './pages/NotFound'
-import ProductPage from './pages/ProductPage'
-import Footer from './components/Footer'
+import NotFound from './pages/NotFound.jsx'
+import ProductPage from './pages/ProductPage.jsx'
+import Footer from './components/Footer.jsx'
 
-import OrderProcessing from './pages/OrderProcessing'
-import Navbar from './components/Navbar'
+import OrderProcessing from './pages/OrderProcessing.jsx'
+import Navbar from './components/Navbar.jsx'
 
 
-import Cart from './pages/Carts'
-import Orders from './pages/Order'
-import OrderPage from './pages/OrderPage'
-import Login from './components/Login'
-import Home from './pages/Home'
-import AdminDashboard from './pages/AdminDashboard'
-import Checkout from './pages/Checkout'
-import Payment from './pages/Payment'
+import Cart from './pages/Carts.jsx'
+import Orders from './pages/Order.jsx'
+import OrderPage from './pages/OrderPage.jsx'
+import Login from './components/Login.jsx'
+import Home from './pages/Home.jsx'
+import AdminDashboard from './pages/AdminDashboard.jsx'
+import Checkout from './pages/Checkout.jsx'
+import Payment from './pages/Payment.jsx'
 
 
 

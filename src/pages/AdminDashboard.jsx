@@ -1,8 +1,8 @@
-import HomePage from "@/components/admin/HomePage";
-import InfoPage from "@/components/admin/InfoPage";
-import OrdersPage from "@/components/admin/OrdersPage";
+import HomePage from "@/components/admin/HomePage.jsx";
+import InfoPage from "@/components/admin/InfoPage.jsx";
+import OrdersPage from "@/components/admin/OrdersPage.jsx";
 
-import { UserData } from "@/context/UserContext";
+import { UserData } from "@/context/UserContext.jsx";
 
 import {
   Home,

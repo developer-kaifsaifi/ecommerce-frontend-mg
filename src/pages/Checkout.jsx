@@ -1,13 +1,13 @@
-import { server } from "@/main";
+import { server } from "@/main.jsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Trash, Plus, MapPin, Phone } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import LoaderMG from "../components/LoaderMG";
+import LoaderMG from "../components/LoaderMG.jsx";
 import { motion, AnimatePresence } from "motion/react";
-import { Spinner } from "../components/ui/spinner";
+
 
 const Checkout = () => {
   const [address, setAddress] = useState([]);

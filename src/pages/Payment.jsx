@@ -1,6 +1,6 @@
 
-import { CartData } from "@/context/CartContext";
-import { server } from "@/main";
+import { CartData } from "@/context/CartContext.jsx";
+import { server } from "@/main.jsx";
 
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 
 import { motion } from "motion/react";
-import LoaderMG from "../components/LoaderMG";
+import LoaderMG from "../components/LoaderMG.jsx";
 
 const Payment = () => {
   const {
