@@ -7,9 +7,9 @@ import { ToastContainer } from 'react-toastify'
 import { ProductProvider } from './context/ProductContext.jsx'
 import { CartProvider } from './context/CartContext.jsx'
 import Cursor from './components/Cursor.jsx'
+import axios from "axios";
 
-
-
+axios.defaults.withCredentials = true;
 export const server = "https://ecommerce-backend-mg.onrender.com";
 
 export const categories = [
