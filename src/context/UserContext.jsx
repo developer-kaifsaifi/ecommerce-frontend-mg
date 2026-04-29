@@ -19,7 +19,7 @@ async function loginUser (email, navigate) {
     setBtnLoading(true)
 
     try {
-        const { data } = await axios.post(`${server}/api/user/login`,{email})
+        const { data } = await axios.post(`${server}/user/login`,{email})
         toast.success(data.message)
         localStorage.setItem("email",email)
         navigate("/verify", {
@@ -45,7 +45,7 @@ async function verifyUser (otp, navigate) {
     const email = localStorage.getItem("email")
 
     try {
-        const { data } = await axios.post(`${server}/api/user/verify`,{email,otp})
+        const { data } = await axios.post(`${server}/user/verify`,{email,otp})
         toast.success(data.message)
         localStorage.clear()
         navigate("/");
@@ -70,7 +70,7 @@ async function verifyUser (otp, navigate) {
 
 async function fetchUser () {
     try {
-        const { data } = await axios.get(`${server}/api/user/me`, {
+        const { data } = await axios.get(`${server}/user/me`, {
             headers:{
                 token:Cookies.get("token")
             }
