@@ -95,6 +95,8 @@ img{
 
 button{
   user-select: none;
+  transition: all ease-in-out;
+  
 
 
 }

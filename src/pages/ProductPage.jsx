@@ -24,7 +24,7 @@ import { UserData } from "../context/UserContext.jsx";
 import LoaderMG from "../components/LoaderMG.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 
-import { Button } from "@/components/ui/button.jsx";
+
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { categories, server } from "@/main.jsx";
@@ -175,9 +175,9 @@ export default function ProductPage() {
           {/* Admin Product Edit Form */}
           {user && user.role === "admin" && (
             <div className="w-full md:w-[600px] m-auto mb-10">
-              <Button onClick={updateHandler} className="mb-4 bg-[#1d1d1d] hover:bg-[#BEA163] text-white">
+              <button onClick={updateHandler} className="mb-4 bg-[#1d1d1d] flex px-4 py-3 hover:bg-[#BEA163] text-white">
                 {show ? <X /> : <Edit className="mr-2" />} {show ? "Close Edit" : "Edit Product"}
-              </Button>
+              </button>
               
               {show && (
                 <div className="space-y-4 bg-white p-6 border border-[#e7dcc6] shadow-sm">
@@ -238,14 +238,14 @@ export default function ProductPage() {
                       required
                     />
                   </div>
-                  <Button
+                  <button
                     type="submit"
-                    className="w-full bg-[#BEA163] hover:bg-[#1d1d1d] text-white"
+                    className="w-full bg-[#BEA163] flex px-4 py-3 items-center justify-center hover:bg-[#1d1d1d] text-white"
                     disabled={btnLoading}
                     onClick={submitHandler}
                   >
                     {btnLoading ? <Loader className="animate-spin" /> : "Update Product"}
-                  </Button>
+                  </button>
                 </div>
               )}
             </div>
@@ -333,9 +333,9 @@ export default function ProductPage() {
                         className="block w-full mt-2 text-sm border p-2"
                       />
                     </div>
-                    <Button type="submit" disabled={btnLoading} className="bg-[#1d1d1d] hover:bg-[#BEA163] text-white w-fit">
+                    <button type="submit" disabled={btnLoading} className="bg-[#1d1d1d] flex px-4 py-3 hover:bg-[#BEA163] text-white w-fit">
                       {btnLoading ? <Loader className="animate-spin" /> : "Update Image"}
-                    </Button>
+                    </button>
                   </form>
                 )}
 
