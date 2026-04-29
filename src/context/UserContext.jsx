@@ -14,57 +14,30 @@ export const UserProvider = ({children}) => {
     const [btnLoading,setBtnLoading] = useState(false)
     const [isAuth,setIsAuth] = useState(false)
     
-// async function loginUser (email, navigate) {
+async function loginUser (email, navigate) {
     
-//     setBtnLoading(true)
+    setBtnLoading(true)
 
-//     try {
-//         const { data } = await axios.post(`${server}/user/login`,{email})
-//         toast.success(data.message)
-//         localStorage.setItem("email",email)
-//         navigate("/verify", {
-//   state: {
-//     email,
-//   },
-// });
-//         setBtnLoading(false)
+    try {
+        const { data } = await axios.post(`${server}/user/login`,{email})
+        toast.success(data.message)
+        localStorage.setItem("email",email)
+        navigate("/verify", {
+  state: {
+    email,
+  },
+});
+        setBtnLoading(false)
 
         
-//     } catch (error) {
-//         toast.error(error.response.data.message)
-//         setBtnLoading(false)
+    } catch (error) {
+        toast.error(error.response.data.message)
+        setBtnLoading(false)
         
-//     }
-
-// }     
-
-
-export const loginUser = useTryCatch(async (req, res) => {
-    const { email } = req.body;
-    console.log("1. API Hit: Request aayi email ke liye ->", email);
-
-    const subject = "OTP for Ecommerce login";
-    const otp = Math.floor(Math.random() * 1000000);
-
-    console.log("2. Database check kar rahe hain...");
-    const prevOtp = await OTP.findOne({ email });
-    console.log("3. Database check done.");
-
-    if (prevOtp) {
-        await prevOtp.deleteOne();
     }
 
-    console.log("4. Email bhejne ki koshish kar rahe hain...");
-    await sendOtp({ email, subject, otp });
-    console.log("5. Email successfully chala gaya!");
+}     
 
-    await OTP.create({ email, otp });
-    console.log("6. Naya OTP database me save ho gaya.");
-
-    res.json({
-        message: "otp send to your mail"
-    });
-});
 
 async function verifyUser (otp, navigate) {
     
