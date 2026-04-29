@@ -10,7 +10,7 @@ import Cursor from './components/Cursor.jsx'
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-export const server = "https://ecommerce-backend-mg.onrender.com";
+export const server = "https://ecommerce-backend-mg.onrender.com/api";
 
 export const categories = [
   "smartphone",
