@@ -2,7 +2,7 @@ import { Loader, Mail, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { UserData } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "./ui/Spinner";
+import { Spinner } from "./ui/spinner";
 
 export default function Login() {
 

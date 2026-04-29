@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import LoaderMG from "../components/LoaderMG";
 import { motion, AnimatePresence } from "motion/react";
-import { Spinner } from "../components/ui/Spinner";
+import { Spinner } from "../components/ui/spinner";
 
 const Checkout = () => {
   const [address, setAddress] = useState([]);

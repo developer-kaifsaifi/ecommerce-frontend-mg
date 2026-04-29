@@ -24,9 +24,9 @@ import { UserData } from "../context/UserContext";
 import LoaderMG from "../components/LoaderMG";
 import ProductCard from "../components/ProductCard";
 
-import { Button } from "@/components/ui/Button.jsx";
-import { Input } from "@/components/ui/Input.jsx";
-import { Label } from "@/components/ui/Label.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { Input } from "@/components/ui/input.jsx";
+import { Label } from "@/components/ui/label.jsx";
 import { categories, server } from "@/main";
 
 export default function ProductPage() {
