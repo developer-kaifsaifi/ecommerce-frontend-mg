@@ -29,7 +29,7 @@ const Orders = () => {
     const fetchOrders = async () => {
       try {
         const { data } = await axios.get(
-          `${server}/api/order/all`,
+          `${server}/order/all`,
           {
             headers: {
               token: Cookies.get("token"),
