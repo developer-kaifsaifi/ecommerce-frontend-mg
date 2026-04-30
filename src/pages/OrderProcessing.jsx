@@ -57,7 +57,7 @@ const OrderProcessing = () => {
 
       try {
         const { data } = await axios.post(
-          `${server}/api/order/verify/payment`,
+          `${server}/order/verify/payment`,
           { sessionId },
           {
             headers: {
