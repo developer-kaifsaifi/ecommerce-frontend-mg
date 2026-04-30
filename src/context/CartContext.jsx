@@ -15,7 +15,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   async function fetchCart() {
     try {
-      const { data } = await axios.get(`${server}/api/cart/all`, {
+      const { data } = await axios.get(`${server}/cart/all`, {
         headers: {
           token: Cookies.get("token"),
         },
@@ -32,7 +32,7 @@ export const CartProvider = ({ children }) => {
   async function addToCart(product) {
     try {
       const { data } = await axios.post(
-        `${server}/api/cart/add`,
+        `${server}/cart/add`,
         { product },
         {
           headers: {
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
   async function updateCart(action, id) {
     try {
       const { data } = await axios.post(
-        `${server}/api/cart/update?action=${action}`,
+        `${server}/cart/update?action=${action}`,
         { id },
         {
           headers: {
@@ -68,7 +68,7 @@ export const CartProvider = ({ children }) => {
 
   async function removeFromCart(id) {
     try {
-      const { data } = await axios.get(`${server}/api/cart/remove/${id}`, {
+      const { data } = await axios.get(`${server}/cart/remove/${id}`, {
         headers: {
           token,
         },
