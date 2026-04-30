@@ -17,7 +17,7 @@ const Checkout = () => {
   async function fetchAddress() {
     try {
       const { data } = await axios.get(
-        `${server}/api/address/all`,
+        `${server}/address/all`,
         {
           headers: {
             token: Cookies.get("token"),
