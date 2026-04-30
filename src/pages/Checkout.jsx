@@ -126,7 +126,7 @@ const getCurrentLocation = () => {
     ) {
       try {
         const { data } = await axios.delete(
-          `${server}/api/address/${id}`,
+          `${server}/address/${id}`,
           {
             headers: {
               token: Cookies.get("token"),
