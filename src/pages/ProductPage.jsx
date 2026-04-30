@@ -97,7 +97,7 @@ export default function ProductPage() {
 
     try {
       const { data } = await axios.put(
-        `${server}/api/product/${id}`,
+        `${server}/product/${id}`,
         { title, about, price, stock, category },
         {
           headers: {
@@ -135,7 +135,7 @@ export default function ProductPage() {
 
     try {
       const { data } = await axios.post(
-        `${server}/api/product/${id}`,
+        `${server}/product/${id}`,
         formData,
         {
           headers: {
