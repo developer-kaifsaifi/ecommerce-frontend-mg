@@ -50,7 +50,7 @@ const Payment = () => {
   async function fetchAddress() {
     try {
       const { data } = await axios.get(
-        `${server}/api/address/${id}`,
+        `${server}/address/${id}`,
         {
           headers: {
             token: Cookies.get("token"),
@@ -74,7 +74,7 @@ const Payment = () => {
 
       try {
         const { data } = await axios.post(
-          `${server}/api/order/new/cod`,
+          `${server}/order/new/cod`,
           {
             method,
             phone: address.phone,
@@ -115,7 +115,7 @@ const Payment = () => {
           await stripePromise;
 
         const { data } = await axios.post(
-          `${server}/api/order/new/online`,
+          `${server}/order/new/online`,
           {
             method,
             phone: address.phone,
