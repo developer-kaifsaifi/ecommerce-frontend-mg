@@ -24,7 +24,7 @@ const OrderPage = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const { data } = await axios.get(`${server}/api/order/${id}`, {
+        const { data } = await axios.get(`${server}/order/${id}`, {
           headers: {
             token: Cookies.get("token"),
           },
