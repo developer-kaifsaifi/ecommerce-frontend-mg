@@ -85,7 +85,7 @@ const getCurrentLocation = () => {
 
     try {
       const { data } = await axios.post(
-        `${server}/api/address/new`,
+        `${server}/address/new`,
         {
           address: newAddress.address,
           phone: newAddress.phone,
