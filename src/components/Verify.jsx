@@ -16,6 +16,8 @@ const email = location.state?.email || "";
 
 const [timer, setTimer] = useState(90)
 const [canResend, setCanResend] = useState(false)
+const [resendLoading, setResendLoading] = useState(false);
+const [verifyLoading, setVerifyLoading] = useState(false);
 
 useEffect(()=>{
   if(timer>0){
@@ -46,17 +48,30 @@ useEffect(() => {
 }, [email, navigate]);
 
 
-  const submitHandler = () => {
-    verifyUser(Number(otp), navigate)
-  }
+const submitHandler = async () => {
+  try {
+    setVerifyLoading(true);
 
-  const handleResendOtp = async () => {
-    const email = localStorage.getItem("email")
-    await loginUser(email, navigate )
-    setTimer(90)
-    setCanResend(false)
-   
+    await verifyUser(Number(otp), navigate);
+  } finally {
+    setVerifyLoading(false);
   }
+};
+
+const handleResendOtp = async () => {
+  try {
+    setResendLoading(true);
+
+    const email = localStorage.getItem("email");
+
+    await loginUser(email, navigate);
+
+    setTimer(90);
+    setCanResend(false);
+  } finally {
+    setResendLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] flex items-center justify-center px-6 py-10">
@@ -194,20 +209,22 @@ inputMode="numeric"
     )}
   </p>
 
- <button
-  disabled={!canResend || btnLoading}
+<button
+  disabled={!canResend || resendLoading || verifyLoading}
   onClick={handleResendOtp}
   className={`
     text-sm font-semibold transition-all duration-300
     flex items-center gap-2
     ${
-      canResend && !btnLoading
+      canResend &&
+      !resendLoading &&
+      !verifyLoading
         ? "text-[#BEA163] hover:opacity-80 cursor-pointer"
         : "text-gray-400 cursor-not-allowed"
     }
   `}
 >
-  {btnLoading ? (
+  {resendLoading ? (
     <>
       <Spinner className="scale-75" />
       Sending...
@@ -222,21 +239,21 @@ inputMode="numeric"
               {/* Verify Button */}
 <button
   onClick={submitHandler}
-  disabled={btnLoading}
+  disabled={verifyLoading}
   className={`
     h-15 rounded-2xl text-lg font-semibold transition-all duration-300
     flex items-center justify-center gap-3
     ${
-      btnLoading
+      verifyLoading
         ? "bg-[#d4b57a] cursor-not-allowed"
         : "bg-[#BEA163] hover:opacity-90 cursor-pointer"
     }
     text-black
   `}
 >
-  {btnLoading ? (
+  {verifyLoading ? (
     <>
-      <Spinner />
+      <Spinner className="scale-90" />
       Verifying...
     </>
   ) : (
