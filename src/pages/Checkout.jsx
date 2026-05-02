@@ -424,14 +424,24 @@ const getCurrentLocation = () => {
                   Close
                 </button>
 
-                <motion.button
-                  whileHover={{ scale: 0.98 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={handleAddAddress}
-                  className="flex h-14 flex-1 items-center justify-center bg-[#1d1d1d] text-sm uppercase tracking-[4px] text-white transition-all duration-300 hover:bg-[#BEA163] hover:text-black cursor-pointer"
-                >
-                  Add Address
-                </motion.button>
+               <motion.button
+  whileHover={!addressLoading ? { scale: 0.98 } : {}}
+  whileTap={!addressLoading ? { scale: 0.96 } : {}}
+  disabled={addressLoading}
+  onClick={handleAddAddress}
+  className={`
+    flex h-14 flex-1 items-center justify-center
+    text-sm uppercase tracking-[4px]
+    transition-all duration-300
+    ${
+      addressLoading
+        ? "bg-[#4a4a4a] text-gray-300 cursor-not-allowed"
+        : "bg-[#1d1d1d] text-white hover:bg-[#BEA163] hover:text-black cursor-pointer"
+    }
+  `}
+>
+  {addressLoading ? "Adding..." : "Add Address"}
+</motion.button>
 
               </div>
 
