@@ -194,7 +194,7 @@ inputMode="numeric"
     )}
   </p>
 
-  <button
+ <button
   disabled={!canResend || btnLoading}
   onClick={handleResendOtp}
   className={`
@@ -209,10 +209,7 @@ inputMode="numeric"
 >
   {btnLoading ? (
     <>
-      <Spinner
-        className="animate-spin"
-        size={14}
-      />
+      <Spinner className="scale-75" />
       Sending...
     </>
   ) : (
@@ -223,7 +220,7 @@ inputMode="numeric"
 </div>
 
               {/* Verify Button */}
-              <button
+<button
   onClick={submitHandler}
   disabled={btnLoading}
   className={`
@@ -239,7 +236,7 @@ inputMode="numeric"
 >
   {btnLoading ? (
     <>
-      <Spinner className="animate-spin" size={20} />
+      <Spinner />
       Verifying...
     </>
   ) : (

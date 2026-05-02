@@ -34,6 +34,10 @@ export default function Cursor() {
             className="
               mix-blend-multiply
               fixed
+              md:block
+              lg:block
+              sm:hidden
+              hidden
               top-0
               left-0
               pointer-events-none
