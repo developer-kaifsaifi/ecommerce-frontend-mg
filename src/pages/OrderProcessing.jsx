@@ -85,6 +85,7 @@ const OrderProcessing = () => {
         toast.error(
           "Payment verification failed"
         );
+        fetchCart();
 
         navigate("/cart");
 

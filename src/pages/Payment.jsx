@@ -141,9 +141,12 @@ const Payment = () => {
           setLoading(false);
         }
       } catch (error) {
+        
         toast.error(
           "Payment Failed. Please Try Again"
         );
+fetchCart()
+
 
         setLoading(false);
       }

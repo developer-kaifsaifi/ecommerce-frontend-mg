@@ -24,6 +24,7 @@ import Home from './pages/Home.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
 import Checkout from './pages/Checkout.jsx'
 import Payment from './pages/Payment.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 
 
 
@@ -36,6 +37,9 @@ export default function App() {
     <>
    {
     loading ? (<LoaderMG/>) : ( <BrowserRouter>
+
+<ScrollToTop/>
+
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
