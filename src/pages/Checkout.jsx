@@ -13,6 +13,7 @@ const Checkout = () => {
   const [address, setAddress] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locLoading, setLocLoading] = useState(false)
+  const [addressLoading, setAddressLoading] = useState(false);
 
   async function fetchAddress() {
     try {
@@ -78,41 +79,47 @@ const getCurrentLocation = () => {
   );
 };
   const handleAddAddress = async () => {
-     if (newAddress.phone.length !== 10) {
+  if (addressLoading) return;
+
+  if (newAddress.phone.length !== 10) {
     toast.error("Phone number must be 10 digits");
     return;
   }
 
-    try {
-      const { data } = await axios.post(
-        `${server}/address/new`,
-        {
-          address: newAddress.address,
-          phone: newAddress.phone,
+  try {
+    setAddressLoading(true);
+
+    const { data } = await axios.post(
+      `${server}/address/new`,
+      {
+        address: newAddress.address,
+        phone: newAddress.phone,
+      },
+      {
+        headers: {
+          token: Cookies.get("token"),
         },
-        {
-          headers: {
-            token: Cookies.get("token"),
-          },
-        }
-      );
-
-      if (data.message) {
-        toast.success(data.message);
-
-        fetchAddress();
-
-        setNewAddress({
-          address: "",
-          phone: "",
-        });
-
-        setModalOpen(false);
       }
-    } catch (error) {
-      toast.error(error.response.data.message);
+    );
+
+    if (data.message) {
+      toast.success(data.message);
+
+      await fetchAddress();
+
+      setNewAddress({
+        address: "",
+        phone: "",
+      });
+
+      setModalOpen(false);
     }
-  };
+  } catch (error) {
+    toast.error(error.response.data.message);
+  } finally {
+    setAddressLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchAddress();
