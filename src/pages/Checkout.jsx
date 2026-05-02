@@ -2,7 +2,7 @@ import { server } from "@/main.jsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Trash, Plus, MapPin, Phone } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import LoaderMG from "../components/LoaderMG.jsx";
@@ -14,6 +14,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true);
   const [locLoading, setLocLoading] = useState(false)
   const [addressLoading, setAddressLoading] = useState(false);
+  const isSubmitting = useRef(false);
 
   async function fetchAddress() {
     try {
@@ -78,8 +79,8 @@ const getCurrentLocation = () => {
     }
   );
 };
-  const handleAddAddress = async () => {
-  if (addressLoading) return;
+const handleAddAddress = async () => {
+  if (isSubmitting.current) return;
 
   if (newAddress.phone.length !== 10) {
     toast.error("Phone number must be 10 digits");
@@ -87,6 +88,7 @@ const getCurrentLocation = () => {
   }
 
   try {
+    isSubmitting.current = true;
     setAddressLoading(true);
 
     const { data } = await axios.post(
@@ -117,10 +119,10 @@ const getCurrentLocation = () => {
   } catch (error) {
     toast.error(error.response.data.message);
   } finally {
+    isSubmitting.current = false;
     setAddressLoading(false);
   }
 };
-
   useEffect(() => {
     fetchAddress();
   }, []);
