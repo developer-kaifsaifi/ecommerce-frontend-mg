@@ -143,77 +143,78 @@ export default function Home() {
           </motion.div>
 
           {/* Products */}
-          <div className="relative z-10">
-            {newProd && newProd.length > 0 ? (
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={{
-                  hidden: {},
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.08,
-                    },
-                  },
-                }}
-                className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
-              >
-                {newProd.map((e) => {
-                  return (
-                    <motion.div
-                      key={e._id}
-                      variants={{
-                        hidden: {
-                          opacity: 0,
-                          y: 100,
-                          scale: 0.9,
-                        },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        },
-                      }}
-                      transition={{
-                        duration: 0.9,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      whileHover={{
-                        y: -12,
-                        rotateX: 3,
-                        rotateY: 3,
-                      }}
-                    >
-                      <motion.div
-                        whileHover={{
-                          boxShadow:
-                            "0px 25px 60px rgba(0,0,0,0.12)",
-                        }}
-                        transition={{ duration: 0.4 }}
-                        className="rounded-[32px]"
-                      >
-                        <ProductCard
-                          product={e}
-                          latest={"yes"}
-                        />
-                      </motion.div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                className="flex h-[300px] items-center justify-center rounded-[40px] border border-dashed border-[#BEA163]/20 bg-white/80 backdrop-blur-xl"
-              >
-                <h3 className="font-garamond text-4xl text-gray-500">
-                  No Products Available
-                </h3>
-              </motion.div>
-            )}
-          </div>
+          {/* Products */}
+<div className="relative z-10">
+  {loading ? (
+    <LoaderMG />
+  ) : newProd && newProd.length > 0 ? (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            staggerChildren: 0.08,
+          },
+        },
+      }}
+      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8"
+    >
+      {newProd.map((e) => {
+        return (
+          <motion.div
+            key={e._id}
+            variants={{
+              hidden: {
+                opacity: 0,
+                y: 100,
+                scale: 0.9,
+              },
+              visible: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+              },
+            }}
+            transition={{
+              duration: 0.9,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            whileHover={{
+              y: -12,
+            }}
+          >
+            <motion.div
+              whileHover={{
+                boxShadow:
+                  "0px 25px 60px rgba(0,0,0,0.12)",
+              }}
+              transition={{ duration: 0.4 }}
+              className="rounded-[32px]"
+            >
+              <ProductCard
+                product={e}
+                latest={"yes"}
+              />
+            </motion.div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
+  ) : (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      className="flex h-[300px] items-center justify-center rounded-[40px] border border-dashed border-[#BEA163]/20 bg-white/80 backdrop-blur-xl"
+    >
+      <h3 className="font-garamond text-4xl text-gray-500">
+        No Products Available
+      </h3>
+    </motion.div>
+  )}
+</div>
 
           {/* Luxury Bottom Fade */}
           <div className="pointer-events-none absolute bottom-0 left-0 h-40 w-full bg-gradient-to-t from-[#ebe4d8] to-transparent" />
