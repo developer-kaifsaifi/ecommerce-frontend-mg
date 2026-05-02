@@ -56,7 +56,25 @@ createRoot(document.getElementById('root')).render(
 <ProductProvider>
   <CartProvider>
    
-      <ToastContainer/>
+      <ToastContainer
+  position="top-right"
+  autoClose={1000}
+  hideProgressBar={true}
+  newestOnTop
+  closeOnClick
+  pauseOnHover={false}
+  draggable={false}
+  theme="light"
+  toastStyle={{
+    background: "#1d1d1d",
+    color: "#f4f1ea",
+    border: "1px solid rgba(190,161,99,0.2)",
+    borderRadius: "18px",
+    fontFamily: "Manrope",
+    padding: "14px 18px",
+    boxShadow: "0px 10px 30px rgba(0,0,0,0.12)",
+  }}
+/>
       <App />
       <Cursor/>
   </CartProvider>
