@@ -3,7 +3,7 @@
 
 export default function LoaderMG() {
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#151515] flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-9999 bg-[#151515] flex items-center justify-center overflow-hidden">
 
       {/* Background Glow */}
       <div className="absolute h-72 w-72 rounded-full bg-[#BEA163]/20 blur-3xl" />

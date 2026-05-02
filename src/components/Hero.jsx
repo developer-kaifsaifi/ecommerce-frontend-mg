@@ -59,7 +59,7 @@ export default function Hero({navigate}) {
 
           {/* Paragraph */}
           <motion.p variants={item}
-          className="max-w-xl mt-8 text-lg leading-9 text-[#4b4b4b] font-manrope">
+          className="max-w-xl mt-8 text-[0.8rem] md:text-lg leading-9 text-[#4b4b4b] font-manrope">
             Premium outfits for men crafted with elegance,
             comfort, and attention to detail — designed for
             modern lifestyles and timeless confidence.
@@ -74,7 +74,7 @@ export default function Hero({navigate}) {
               initial={{ scale: 1 }}
               whileHover={{ scale: 0.96 }}
               whileTap={{ scale: 0.93 }}
-              className="bg-[#1d1d1d] hover:bg-black text-white px-8 py-4 rounded-full font-garamond text-2xl shadow-lg shadow-black/10 transition-all cursor-pointer"
+              className="bg-[#1d1d1d] md:scale-100 scale-65 hover:bg-black text-white px-8 py-4 rounded-full font-garamond text-2xl shadow-lg shadow-black/10 transition-all cursor-pointer"
             >
               Explore Collection
             </motion.button>
@@ -90,7 +90,7 @@ export default function Hero({navigate}) {
               initial={{ scale: 1 }}
               whileHover={{ scale: 0.96 }}
               whileTap={{ scale: 0.93 }}
-              className="border z-40 border-[#BEA163]/40 text-[#705023] px-8 py-4 rounded-full font-garamond text-2xl backdrop-blur-sm hover:bg-[#BEA163]/10 transition-all cursor-pointer"
+              className="border md:scale-100 scale-65 z-40 border-[#BEA163]/40 text-[#705023] px-8 py-4 rounded-full font-garamond text-2xl backdrop-blur-sm hover:bg-[#BEA163]/10 transition-all cursor-pointer"
             >
               New Arrivals
             </motion.button>
@@ -155,7 +155,7 @@ export default function Hero({navigate}) {
           transition={{duration:1,
             ease:easeInOut
           }}
-          className="absolute z-40 bottom-8 left-0 md:left-8 bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl px-6 py-5 shadow-xl">
+          className="absolute md:scale-100 scale-65 z-40 md:bottom-8 left-0 md:left-8 bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl px-6 py-5 shadow-xl">
 
             <p className="text-xs uppercase tracking-[4px] text-[#705023] mb-2">
               Luxury Collection
