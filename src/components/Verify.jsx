@@ -2,6 +2,7 @@ import { Mail, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserData } from "../context/UserContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Spinner } from "./ui/spinner.jsx";
 
 
 export default function Verify() {
@@ -194,28 +195,57 @@ inputMode="numeric"
   </p>
 
   <button
-    disabled={!canResend}
-
-    onClick={handleResendOtp}
-
-    className={`
-      text-sm font-semibold transition-all duration-300
-      ${
-        canResend
-          ? "text-[#BEA163] hover:opacity-80 cursor-pointer"
-          : "text-gray-400 cursor-not-allowed"
-      }
-    `}
-  >
-    Resend
-  </button>
+  disabled={!canResend || btnLoading}
+  onClick={handleResendOtp}
+  className={`
+    text-sm font-semibold transition-all duration-300
+    flex items-center gap-2
+    ${
+      canResend && !btnLoading
+        ? "text-[#BEA163] hover:opacity-80 cursor-pointer"
+        : "text-gray-400 cursor-not-allowed"
+    }
+  `}
+>
+  {btnLoading ? (
+    <>
+      <Spinner
+        className="animate-spin"
+        size={14}
+      />
+      Sending...
+    </>
+  ) : (
+    "Resend"
+  )}
+</button>
 
 </div>
 
               {/* Verify Button */}
-              <button onClick={submitHandler} className="h-15 rounded-2xl bg-[#BEA163] text-black text-lg font-semibold hover:opacity-90 transition-all duration-300 cursor-pointer">
-                Verify & Continue
-              </button>
+              <button
+  onClick={submitHandler}
+  disabled={btnLoading}
+  className={`
+    h-15 rounded-2xl text-lg font-semibold transition-all duration-300
+    flex items-center justify-center gap-3
+    ${
+      btnLoading
+        ? "bg-[#d4b57a] cursor-not-allowed"
+        : "bg-[#BEA163] hover:opacity-90 cursor-pointer"
+    }
+    text-black
+  `}
+>
+  {btnLoading ? (
+    <>
+      <Spinner className="animate-spin" size={20} />
+      Verifying...
+    </>
+  ) : (
+    "Verify & Continue"
+  )}
+</button>
 
             </div>
 
