@@ -1,17 +1,12 @@
-
-
-
 import { easeInOut, motion } from "motion/react";
-import hero from "./../assets/hero.png";
-import logo from "./../assets/mg-black.png";
-
-
+import hero from "./../assets/hero.webp";
+import logo from "./../assets/mg-black.webp";
 
 const container = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -19,145 +14,171 @@ const container = {
 const item = {
   hidden: {
     opacity: 0,
-    y: 40,
+    y: 30,
   },
   show: {
     opacity: 1,
     y: 0,
+    transition: {
+      duration: 0.5,
+    },
   },
 };
 
-export default function Hero({navigate}) {
-
-
+export default function Hero({ navigate }) {
   return (
-    <section  className="relative min-h-[110vh] overflow-hidden bg-[#f4f1ea] pt-24">
+    <section className="relative min-h-[110vh] overflow-hidden bg-[#f4f1ea] pt-24">
 
-      {/* Background Glow */}
-      <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-[#BEA163]/10 blur-3xl" />
+      {/* Optimized Background Glow */}
+      <div className="absolute top-20 left-20 h-72 w-72 rounded-full bg-[#BEA163]/10 blur-2xl" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-2 items-center gap-16">
+      <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 md:px-10 lg:grid-cols-2">
 
         {/* Left Content */}
-        <motion.div variants={container} className="relative z-10 flex flex-col items-start">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="relative z-10 flex flex-col items-start"
+        >
 
           {/* Tag */}
-          <div className="mb-6 px-5 py-2 rounded-full border border-[#BEA163]/30 bg-[#BEA163]/10">
-            <p className="uppercase tracking-[4px] text-xs text-[#705023] font-semibold">
+          <motion.div
+            variants={item}
+            className="mb-6 rounded-full border border-[#BEA163]/30 bg-[#BEA163]/10 px-5 py-2"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[4px] text-[#705023]">
               Premium Menswear
             </p>
-          </div>
+          </motion.div>
 
           {/* Heading */}
-          <h1 className="font-garamond text-6xl md:text-7xl xl:text-8xl leading-none font-bold text-black">
+          <motion.h1
+            variants={item}
+            className="font-garamond text-6xl leading-none font-bold text-black md:text-7xl xl:text-8xl"
+          >
             Timeless Style
-          </h1>
+          </motion.h1>
 
-          <motion.h1 variants={item} className="font-garamond text-6xl md:text-7xl xl:text-8xl leading-none font-bold text-[#705023] mt-2">
+          <motion.h1
+            variants={item}
+            className="mt-2 font-garamond text-6xl leading-none font-bold text-[#705023] md:text-7xl xl:text-8xl"
+          >
             Modern Sophistication
           </motion.h1>
 
           {/* Paragraph */}
-          <motion.p variants={item}
-          className="max-w-xl mt-8 text-[0.8rem] md:text-lg leading-9 text-[#4b4b4b] font-manrope">
+          <motion.p
+            variants={item}
+            className="mt-8 max-w-xl text-[0.8rem] leading-9 text-[#4b4b4b] md:text-lg font-manrope"
+          >
             Premium outfits for men crafted with elegance,
             comfort, and attention to detail — designed for
             modern lifestyles and timeless confidence.
           </motion.p>
 
           {/* Buttons */}
-          <div className="flex items-center gap-5 mt-10">
+          <motion.div
+            variants={item}
+            className="mt-10 flex items-center gap-5"
+          >
 
             <motion.button
-            onClick={()=> navigate("/products")}
-              transition={{ duration: 0.2, ease:"easeIn" }}
-              initial={{ scale: 1 }}
+              onClick={() => navigate("/products")}
+              transition={{ duration: 0.2 }}
               whileHover={{ scale: 0.96 }}
               whileTap={{ scale: 0.93 }}
-              className="bg-[#1d1d1d] md:scale-100 scale-65 hover:bg-black text-white px-8 py-4 rounded-full font-garamond text-2xl shadow-lg shadow-black/10 transition-all cursor-pointer"
+              className="cursor-pointer rounded-full bg-[#1d1d1d] px-8 py-4 font-garamond text-2xl text-white shadow-lg transition-all hover:bg-black md:scale-100 scale-65"
             >
               Explore Collection
             </motion.button>
 
             <motion.button
               onClick={() =>
-    window.scrollBy({
-      top: 500,
-      behavior: "smooth",
-    })
-  }
+                window.scrollBy({
+                  top: 500,
+                  behavior: "smooth",
+                })
+              }
               transition={{ duration: 0.2 }}
-              initial={{ scale: 1 }}
               whileHover={{ scale: 0.96 }}
               whileTap={{ scale: 0.93 }}
-              className="border md:scale-100 scale-65 z-40 border-[#BEA163]/40 text-[#705023] px-8 py-4 rounded-full font-garamond text-2xl backdrop-blur-sm hover:bg-[#BEA163]/10 transition-all cursor-pointer"
+              className="z-40 cursor-pointer rounded-full border border-[#BEA163]/40 px-8 py-4 font-garamond text-2xl text-[#705023] transition-all hover:bg-[#BEA163]/10 md:scale-100 scale-65"
             >
               New Arrivals
             </motion.button>
 
-          </div>
+          </motion.div>
 
           {/* Stats */}
-          <div className="flex gap-10 mt-14">
+          <motion.div
+            variants={item}
+            className="mt-14 flex gap-10"
+          >
 
             <div>
-              <h3 className="cursor-crosshair text-4xl font-bold font-garamond text-black">
+              <h3 className="cursor-crosshair font-garamond text-4xl font-bold text-black">
                 5K+
               </h3>
 
-              <p className="cursor-crosshair text-sm uppercase tracking-[3px] text-gray-500 mt-2">
+              <p className="mt-2 text-sm uppercase tracking-[3px] text-gray-500">
                 Happy Customers
               </p>
             </div>
 
             <div className="mb-5">
-              <h3 className="cursor-crosshair text-4xl font-bold font-garamond text-black">
+              <h3 className="cursor-crosshair font-garamond text-4xl font-bold text-black">
                 100+
               </h3>
 
-              <p className="cursor-crosshair text-sm uppercase tracking-[3px] text-gray-500 mt-2">
+              <p className="mt-2 text-sm uppercase tracking-[3px] text-gray-500">
                 Premium Products
               </p>
             </div>
 
-          </div>
+          </motion.div>
 
         </motion.div>
 
         {/* Right Image */}
         <div className="relative flex justify-center lg:justify-end">
 
-          {/* Gold Glow */}
-          <div className="absolute bottom-0 h-[450px] w-[450px] rounded-full bg-[#BEA163]/20 blur-3xl" />
+          {/* Optimized Glow */}
+          <div className="absolute bottom-0 h-[420px] w-[420px] rounded-full bg-[#BEA163]/20 blur-2xl" />
 
-          {/* Main Image */}
+          {/* Main Hero Image */}
           <motion.img
-            initial={{ opacity: 0, y: 40 }}
+            loading="eager"
+            decoding="async"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="relative z-5 w-full max-w-[700px] rounded-[40px] object-cover shadow-2xl shadow-black/10"
+            transition={{ duration: 0.6 }}
+            className="relative z-10 w-full max-w-[700px] rounded-[40px] object-cover shadow-lg will-change-transform"
             src={hero}
-            alt=""
+            alt="Premium Menswear"
           />
 
           {/* Watermark Logo */}
           <img
-            className="absolute z-500 w-[420px] opacity-[0.04] top-10 right-10"
+            loading="lazy"
+            decoding="async"
+            className="absolute top-10 right-10 z-20 w-[420px] opacity-[0.04]"
             src={logo}
-            alt=""
+            alt="MG Logo"
           />
 
           {/* Floating Card */}
-          <motion.div initial={{
-            scale:0
-          }}
-          animate={{scale:1}}
-          transition={{duration:1,
-            ease:easeInOut
-          }}
-          className="absolute md:scale-100 scale-65 z-40 md:bottom-8 left-0 md:left-8 bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl px-6 py-5 shadow-xl">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              duration: 0.6,
+              ease: easeInOut,
+            }}
+            className="absolute left-0 z-40 rounded-3xl border border-white/40 bg-white/80 px-6 py-5 shadow-lg md:bottom-8 md:left-8 md:scale-100 scale-65"
+          >
 
-            <p className="text-xs uppercase tracking-[4px] text-[#705023] mb-2">
+            <p className="mb-2 text-xs uppercase tracking-[4px] text-[#705023]">
               Luxury Collection
             </p>
 

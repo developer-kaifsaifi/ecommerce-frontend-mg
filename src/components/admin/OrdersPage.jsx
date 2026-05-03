@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import  { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
-import moment from "moment";
+import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import LoaderMG from "../LoaderMG.jsx";
 
@@ -16,7 +16,7 @@ const OrdersPage = () => {
   const fetchOrders = async () => {
     try {
       const { data } = await axios.get(
-        `${server}/api/order/admin/all`,
+        `${server}/order/admin/all`,
         {
           headers: {
             token: Cookies.get("token"),
@@ -41,7 +41,7 @@ const OrdersPage = () => {
 
     try {
       const { data } = await axios.post(
-        `${server}/api/order/${orderId}`,
+        `${server}/order/${orderId}`,
         { status },
         {
           headers: {
@@ -201,7 +201,7 @@ const OrdersPage = () => {
 
                   {/* Date */}
                   <td className="border-b border-[#f0e7d8] px-6 py-6 text-sm text-gray-500">
-                    {moment(order.createdAt).format("DD MMM YYYY")}
+                    {dayjs(order.createdAt).format("DD MMM YYYY")}
                   </td>
 
                   {/* Action */}

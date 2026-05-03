@@ -22,7 +22,7 @@ const InfoPage = () => {
 
   async function fetchStats() {
     try {
-      const { data } = await axios.get(`${server}/api/stats`, {
+      const { data } = await axios.get(`${server}/stats`, {
         headers: {
           token: Cookies.get("token"),
         },

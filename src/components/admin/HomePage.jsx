@@ -63,7 +63,7 @@ const HomePage = () => {
     });
 
     try {
-      const { data } = await axios.post(`${server}/api/product/new`, myFrom, {
+      const { data } = await axios.post(`${server}/product/new`, myFrom, {
         headers: {
           "Content-Type": "multipart/form-data",
           token: Cookies.get("token"),
