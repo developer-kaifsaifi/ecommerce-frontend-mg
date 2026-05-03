@@ -1,6 +1,7 @@
-import { easeInOut, motion } from "motion/react";
+
 import hero from "./../assets/hero.webp";
-import logo from "./../assets/mg-black.webp";
+
+import { easeInOut, motion } from "motion/react";
 
 const container = {
   hidden: {},
@@ -158,15 +159,7 @@ export default function Hero({ navigate }) {
             alt="Premium Menswear"
           />
 
-          {/* Watermark Logo */}
-          <img
-            loading="lazy"
-            decoding="async"
-            className="absolute top-10 right-10 z-20 w-[420px] opacity-[0.04]"
-            src={logo}
-            alt="MG Logo"
-          />
-
+          
           {/* Floating Card */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}

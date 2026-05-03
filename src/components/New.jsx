@@ -1,32 +1,42 @@
 
 
+import React, {
+  lazy,
+  Suspense,
+} from "react";
 
+import LoaderMG from "./LoaderMG.jsx";
 
-import Skiper47 from "./skiper/Carousel";
+// Lazy Loaded Carousel
+const Skiper47 = lazy(() =>
+  import("./skiper/Carousel")
+);
 
 export default function New() {
   return (
-    <section className="relative w-full py-24 bg-[#f4f1ea] overflow-hidden">
+    <section className="relative w-full overflow-hidden bg-[#f4f1ea] py-24">
 
-      {/* Background Glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 h-72 w-72 rounded-full bg-[#BEA163]/10 blur-3xl" />
+      {/* Optimized Background Glow */}
+      <div className="absolute top-10 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#BEA163]/10 blur-2xl" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
 
         {/* Heading */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="mb-16 flex flex-col items-center text-center">
 
-          <div className="px-5 py-2 rounded-full border border-[#BEA163]/30 bg-[#BEA163]/10 mb-6">
-            <p className="uppercase tracking-[4px] text-xs text-[#705023] font-semibold">
+          <div className="mb-6 rounded-full border border-[#BEA163]/30 bg-[#BEA163]/10 px-5 py-2">
+
+            <p className="text-xs font-semibold uppercase tracking-[4px] text-[#705023]">
               Fresh Collection
             </p>
+
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-garamond text-black leading-tight">
+          <h1 className="font-garamond text-5xl leading-tight text-black md:text-6xl">
             Look @ Newly Added
           </h1>
 
-          <p className="mt-6 max-w-2xl text-[#4b4b4b] text-lg leading-9 font-manrope">
+          <p className="mt-6 max-w-2xl text-lg leading-9 text-[#4b4b4b] font-manrope">
             Discover our latest arrivals crafted with modern elegance,
             premium fabrics, and timeless style designed for today’s
             fashion-forward men.
@@ -37,38 +47,24 @@ export default function New() {
         {/* Carousel Wrapper */}
         <div className="relative">
 
-          {/* Decorative Blur */}
-          <div className="absolute -left-20 top-1/2 -translate-y-1/2 h-60 w-60 rounded-full bg-[#BEA163]/10 blur-3xl" />
+          {/* Decorative Glow */}
+          <div className="absolute -left-20 top-1/2 h-52 w-52 -translate-y-1/2 rounded-full bg-[#BEA163]/10 blur-2xl" />
 
-          <div className="absolute -right-20 top-1/2 -translate-y-1/2 h-60 w-60 rounded-full bg-[#BEA163]/10 blur-3xl" />
+          <div className="absolute -right-20 top-1/2 h-52 w-52 -translate-y-1/2 rounded-full bg-[#BEA163]/10 blur-2xl" />
 
           {/* Carousel Box */}
-          <div className="relative rounded-[40px] border border-[#BEA163]/15 bg-white/70 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,0.06)] p-5 md:p-8 overflow-hidden">
+          <div className="relative overflow-hidden rounded-[40px] border border-[#BEA163]/15 bg-white/70 p-5 shadow-lg md:p-8">
 
-            <Skiper47 />
+            <Suspense fallback={<LoaderMG />}>
+              <Skiper47 />
+            </Suspense>
 
           </div>
 
         </div>
 
       </div>
+
     </section>
   );
 }
-
-
-
-
-
-
-
-
-// import Skiper47 from './skiper/Carousel'
-
-// export default function New() {
-//   return (
-//     <div className='w-full h-full flex flex-col'><h1 className='text-4xl self-center mb-5 font-garamond'>Look @ Newly Added</h1><div className='w-full h-full '><Skiper47/></div></div>
-//   )
-// }
-
-

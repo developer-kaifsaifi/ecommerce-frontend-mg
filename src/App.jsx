@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 
+import { ReactLenis } from "lenis/react";
+
 // Lazy Loaded Pages
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Products = lazy(() => import("./pages/Products.jsx"));
@@ -30,73 +32,136 @@ export default function App() {
   if (loading) return <LoaderMG />;
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.08,
+        duration: 0.9,
+        smoothWheel: true,
+        smoothTouch: false,
+        wheelMultiplier: 0.9,
+      }}
+    >
+      <BrowserRouter>
 
-      <Navbar />
+        <ScrollToTop />
 
-      <Suspense fallback={<LoaderMG />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
+        <Navbar />
 
-          <Route path="/products" element={<Products />} />
+        <Suspense fallback={<LoaderMG />}>
 
-          <Route path="/product/:id" element={<ProductPage />} />
+          <Routes>
 
-          <Route
-            path="/cart"
-            element={isAuth ? <Cart /> : <Login />}
-          />
+            <Route path="/" element={<Home />} />
 
-          <Route
-            path="/orders"
-            element={isAuth ? <Orders /> : <Login />}
-          />
+            <Route
+              path="/products"
+              element={<Products />}
+            />
 
-          <Route
-            path="/order/:id"
-            element={isAuth ? <OrderPage /> : <Login />}
-          />
+            <Route
+              path="/product/:id"
+              element={<ProductPage />}
+            />
 
-          <Route
-            path="/admin/dashboard"
-            element={isAuth ? <AdminDashboard /> : <Login />}
-          />
+            <Route
+              path="/cart"
+              element={
+                isAuth ? <Cart /> : <Login />
+              }
+            />
 
-          <Route
-            path="/checkout"
-            element={isAuth ? <Checkout /> : <Login />}
-          />
+            <Route
+              path="/orders"
+              element={
+                isAuth ? <Orders /> : <Login />
+              }
+            />
 
-          <Route
-            path="/payment/:id"
-            element={isAuth ? <Payment /> : <Login />}
-          />
+            <Route
+              path="/order/:id"
+              element={
+                isAuth ? (
+                  <OrderPage />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-          <Route
-            path="/ordersuccess"
-            element={isAuth ? <OrderProcessing /> : <Login />}
-          />
+            <Route
+              path="/admin/dashboard"
+              element={
+                isAuth ? (
+                  <AdminDashboard />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-          <Route
-            path="/login"
-            element={isAuth ? <Home /> : <Login />}
-          />
+            <Route
+              path="/checkout"
+              element={
+                isAuth ? (
+                  <Checkout />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-          <Route
-            path="/verify"
-            element={isAuth ? <Home /> : <Verify />}
-          />
+            <Route
+              path="/payment/:id"
+              element={
+                isAuth ? (
+                  <Payment />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+            <Route
+              path="/ordersuccess"
+              element={
+                isAuth ? (
+                  <OrderProcessing />
+                ) : (
+                  <Login />
+                )
+              }
+            />
 
-      <Footer />
-    </BrowserRouter>
+            <Route
+              path="/login"
+              element={
+                isAuth ? <Home /> : <Login />
+              }
+            />
+
+            <Route
+              path="/verify"
+              element={
+                isAuth ? <Home /> : <Verify />
+              }
+            />
+
+            <Route
+              path="*"
+              element={<NotFound />}
+            />
+
+          </Routes>
+
+        </Suspense>
+
+        <Footer />
+
+      </BrowserRouter>
+    </ReactLenis>
   );
 }
-
 
 
 

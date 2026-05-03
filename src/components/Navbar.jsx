@@ -1,4 +1,4 @@
-import logo from "./../assets/mg.png";
+import logo from "./../assets/mg.webp";
 
 import {
   ShoppingBag,
