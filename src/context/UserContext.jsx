@@ -53,10 +53,11 @@ async function verifyUser (otp, navigate) {
         setIsAuth(true)
         setUser(data.user)
           Cookies.set("token", data.token, {
-            expires: 15,
-            secure: true,
-            path: "/"
-        })
+  expires: 15,
+  secure: true,
+  sameSite: "None",
+  path: "/"
+});
 
         
     } catch (error) {
@@ -67,36 +68,55 @@ async function verifyUser (otp, navigate) {
 
 }     
 
-
 async function fetchUser () {
+
+    const token = Cookies.get("token");
+
+    // 🛑 IMPORTANT GUARD
+    if (!token) {
+        setIsAuth(false);
+        setUser(null);
+        setLoading(false);
+        return;
+    }
+
     try {
         const { data } = await axios.get(`${server}/user/me`, {
             headers:{
-                token:Cookies.get("token")
+                token
             }
-        })
+        });
 
-        setIsAuth(true)
-        setUser(data)
-        setLoading(false)
-        
+        setIsAuth(true);
+        setUser(data);
+        setLoading(false);
 
-        
     } catch (error) {
 
-        console.log(error);
-        setIsAuth(false)
-        setLoading(false)
-        
-        
+        // 🧨 INVALID TOKEN CLEANUP
+        Cookies.remove("token", {
+            path: "/",
+            secure: true,
+            sameSite: "None"
+        });
+
+        setIsAuth(false);
+        setUser(null);
+        setLoading(false);
     }
 }
+
+
 
 function logoutUser(navigate) {
 
     Cookies.remove("token", {
-        path: "/"
-    });
+  path: "/",
+  secure: true,
+  sameSite: "None"
+});
+
+localStorage.clear(); 
 
     setUser(null);
 
