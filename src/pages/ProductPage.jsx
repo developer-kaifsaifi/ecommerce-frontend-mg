@@ -278,11 +278,11 @@ const addToCartHandler = async () => {
               <button
   onClick={addToCartHandler}
   disabled={cartBtnLoading}
-  className="mt-8 flex items-center gap-3 bg-black text-white px-6 py-3 disabled:opacity-70"
+  className="mt-8 flex cursor-pointer items-center gap-3 bg-black text-white px-6 py-3 disabled:opacity-70"
 >
-  {cartBtnLoading ? (
-    <Loader className="animate-spin" />
-  ) : (
+  {cartBtnLoading ? (<>
+    <Loader className="animate-spin" /> <p>Adding...</p>
+  </>) : (
     <>
       <ShoppingBag size={18} />
       Add To Cart
