@@ -1,13 +1,5 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  lazy,
-  Suspense,
-} from "react";
-
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "motion/react";
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -28,29 +20,22 @@ import { CartData } from "../context/CartContext.jsx";
 import { UserData } from "../context/UserContext.jsx";
 
 import LoaderMG from "../components/LoaderMG.jsx";
+import ProductCard from "../components/ProductCard.jsx";
 
-const ProductCard = lazy(() =>
-  import("../components/ProductCard.jsx")
-);
-
+import { Input } from "@/components/ui/input.jsx";
+import { Label } from "@/components/ui/label.jsx";
 import { categories, server } from "@/main.jsx";
 
 export default function ProductPage() {
   const { id } = useParams();
 
-  const {
-    fetchProduct,
-    product,
-    relatedProduct,
-    loading,
-  } = ProductData();
-
+  const { fetchProduct, product, relatedProduct, loading } = ProductData();
   const { addToCart } = CartData();
   const { isAuth, user } = UserData();
 
   const [currentImage, setCurrentImage] = useState(0);
-  const [show, setShow] = useState(false);
 
+  const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [about, setAbout] = useState("");
   const [stock, setStock] = useState("");
@@ -59,7 +44,6 @@ export default function ProductPage() {
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [updatedImages, setUpdatedImages] = useState(null);
-  const [cartBtnLoading, setCartBtnLoading] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -67,15 +51,14 @@ export default function ProductPage() {
     fetchProduct(id);
   }, [id]);
 
-  // 🚫 Crash guard
+  // 🛑 CRASH GUARD
   if (loading || !product || !product.images) {
     return <LoaderMG />;
   }
 
-  // IMAGE NAV
+  // IMAGE NAV SAFE
   const nextImage = () => {
     if (!product?.images?.length) return;
-
     setCurrentImage((prev) =>
       prev === product.images.length - 1 ? 0 : prev + 1
     );
@@ -83,59 +66,62 @@ export default function ProductPage() {
 
   const prevImage = () => {
     if (!product?.images?.length) return;
-
     setCurrentImage((prev) =>
       prev === 0 ? product.images.length - 1 : prev - 1
     );
   };
 
-  const addToCartHandler = async () => {
-    setCartBtnLoading(true);
-    await addToCart(id);
-    setCartBtnLoading(false);
+  const addToCartHandler = () => {
+    addToCart(id);
   };
 
   const updateHandler = () => {
     setShow(!show);
-
+    setCategory(product.category || "");
     setTitle(product.title || "");
     setAbout(product.about || "");
     setStock(product.stock || "");
     setPrice(product.price || "");
-    setCategory(product.category || "");
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (e) => {
+    e.preventDefault();
     setBtnLoading(true);
+
     try {
       await axios.put(
         `${server}/product/${id}`,
         { title, about, price, stock, category },
-        { headers: { token: Cookies.get("token") } }
+        {
+          headers: { token: Cookies.get("token") },
+        }
       );
 
-      toast.success("Updated");
+      toast.success("Product updated");
       fetchProduct(id);
       setShow(false);
     } catch {
       toast.error("Update failed");
     }
+
     setBtnLoading(false);
   };
 
   const handleSubmitImage = async (e) => {
     e.preventDefault();
+    setBtnLoading(true);
 
     if (!updatedImages || updatedImages.length === 0) {
-      return toast.error("Select images");
+      toast.error("Select images");
+      setBtnLoading(false);
+      return;
     }
 
     const formData = new FormData();
-    Array.from(updatedImages).forEach((f) =>
-      formData.append("files", f)
-    );
 
-    setBtnLoading(true);
+    Array.from(updatedImages).forEach((file) =>
+      formData.append("files", file)
+    );
 
     try {
       await axios.post(`${server}/product/${id}`, formData, {
@@ -147,9 +133,11 @@ export default function ProductPage() {
 
       toast.success("Images updated");
       fetchProduct(id);
+
       setUpdatedImages(null);
-      fileInputRef.current.value = "";
       setCurrentImage(0);
+
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch {
       toast.error("Upload failed");
     }
@@ -158,139 +146,169 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] px-6 py-12">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="min-h-screen bg-[#f4f1ea] text-[#1d1d1d]"
+    >
+      <div className="mx-auto max-w-7xl px-6 py-12">
 
-      {/* ADMIN */}
-      {user?.role === "admin" && (
-        <div className="max-w-md mx-auto mb-10">
+        {/* ADMIN EDIT */}
+        {user?.role === "admin" && (
+          <div className="w-full md:w-[600px] m-auto mb-10">
 
-          <button
-            onClick={updateHandler}
-            className="flex gap-2 bg-black text-white px-4 py-2"
-          >
-            {show ? <X /> : <Edit />} Edit
-          </button>
+            <button
+              onClick={updateHandler}
+              className="mb-4 bg-[#1d1d1d] flex px-4 py-3 text-white"
+            >
+              {show ? <X /> : <Edit className="mr-2" />}
+              {show ? "Close Edit" : "Edit Product"}
+            </button>
 
-          {show && (
-            <div className="bg-white p-4 mt-4 space-y-3 border">
+            {show && (
+              <div className="space-y-4 bg-white p-6 border shadow-sm">
 
-              <input value={title} onChange={(e)=>setTitle(e.target.value)} />
-              <input value={about} onChange={(e)=>setAbout(e.target.value)} />
-              <input value={price} onChange={(e)=>setPrice(e.target.value)} />
-              <input value={stock} onChange={(e)=>setStock(e.target.value)} />
+                <Label>Title</Label>
+                <Input value={title} onChange={(e)=>setTitle(e.target.value)} />
 
-              <select value={category} onChange={(e)=>setCategory(e.target.value)}>
-                {categories.map((c)=> <option key={c}>{c}</option>)}
-              </select>
+                <Label>About</Label>
+                <Input value={about} onChange={(e)=>setAbout(e.target.value)} />
 
-              <button onClick={submitHandler}>
-                {btnLoading ? <Loader /> : "Update"}
+                <Label>Category</Label>
+                <select value={category} onChange={(e)=>setCategory(e.target.value)}>
+                  {categories.map((c)=> <option key={c}>{c}</option>)}
+                </select>
+
+                <Label>Price</Label>
+                <Input type="number" value={price} onChange={(e)=>setPrice(e.target.value)} />
+
+                <Label>Stock</Label>
+                <Input type="number" value={stock} onChange={(e)=>setStock(e.target.value)} />
+
+                <button
+                  onClick={submitHandler}
+                  disabled={btnLoading}
+                  className="w-full bg-[#BEA163] flex justify-center py-3 text-white"
+                >
+                  {btnLoading ? <Loader className="animate-spin" /> : "Update"}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* PRODUCT */}
+        <div className="grid gap-14 lg:grid-cols-2">
+
+          {/* IMAGES */}
+          <div>
+
+            <div className="relative bg-white p-5 border shadow-sm">
+
+              <motion.img
+                key={currentImage}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                src={product.images[currentImage]?.url}
+                className="h-[650px] w-full object-cover"
+              />
+
+              <button onClick={prevImage} className="absolute left-5 top-1/2 bg-white p-2">
+                <ChevronLeft />
+              </button>
+
+              <button onClick={nextImage} className="absolute right-5 top-1/2 bg-white p-2">
+                <ChevronRight />
               </button>
 
             </div>
-          )}
-        </div>
-      )}
 
-      {/* PRODUCT */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto"
-      >
+            {/* THUMBNAILS */}
+            <div className="mt-5 flex gap-4 overflow-x-auto">
+              {product?.images?.map((img, i)=>(
+                <img
+                  key={i}
+                  src={img.url}
+                  onClick={()=>setCurrentImage(i)}
+                  className="h-24 w-24 object-cover cursor-pointer border"
+                />
+              ))}
+            </div>
 
-        {/* IMAGE */}
-        <div className="relative">
+            {/* IMAGE UPLOAD */}
+            {user?.role === "admin" && (
+              <form onSubmit={handleSubmitImage} className="mt-6">
+                <input
+                  type="file"
+                  multiple
+                  ref={fileInputRef}
+                  onChange={(e)=>setUpdatedImages(e.target.files)}
+                />
 
-          <motion.img
-            key={currentImage}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            src={product?.images?.[currentImage]?.url}
-            className="w-full h-[500px] object-cover"
-          />
+                <button className="mt-2 bg-black text-white px-4 py-2">
+                  {btnLoading ? <Loader className="animate-spin"/> : "Upload"}
+                </button>
+              </form>
+            )}
 
-          <button onClick={prevImage} className="absolute left-4 top-1/2 bg-white p-2">
-            <ChevronLeft />
-          </button>
-
-          <button onClick={nextImage} className="absolute right-4 top-1/2 bg-white p-2">
-            <ChevronRight />
-          </button>
-
-          <div className="flex gap-3 mt-4 overflow-x-auto">
-            {product?.images?.map((img, i)=>(
-              <img
-                key={i}
-                src={img.url}
-                onClick={()=>setCurrentImage(i)}
-                className="w-20 h-20 object-cover cursor-pointer"
-              />
-            ))}
           </div>
 
-          {/* UPLOAD */}
-          {user?.role === "admin" && (
-            <form onSubmit={handleSubmitImage} className="mt-6">
-              <input
-                type="file"
-                multiple
-                ref={fileInputRef}
-                onChange={(e)=>setUpdatedImages(e.target.files)}
-              />
+          {/* DETAILS */}
+          <div>
 
-              <button>
-                {btnLoading ? <Loader/> : "Upload"}
+            <h1 className="text-6xl font-garamond">
+              {product.title}
+            </h1>
+
+            <p className="mt-6 text-gray-600">
+              {product.about}
+            </p>
+
+            <h2 className="mt-6 text-4xl">
+              ₹ {product.price}
+            </h2>
+
+            {isAuth ? (
+              <button
+                onClick={addToCartHandler}
+                className="mt-8 flex items-center gap-3 bg-black text-white px-6 py-3"
+              >
+                <ShoppingBag size={18} />
+                Add To Cart
               </button>
-            </form>
-          )}
+            ) : (
+              <div className="mt-6 flex gap-2 text-red-500">
+                <LogIn /> Login required
+              </div>
+            )}
+
+          </div>
 
         </div>
 
-        {/* DETAILS */}
-        <div>
+        {/* RELATED */}
+        {relatedProduct?.length > 0 && (
+          <div className="mt-20">
 
-          <h1 className="text-4xl">{product.title}</h1>
-          <p className="mt-4">{product.about}</p>
-          <h2 className="mt-4 text-3xl">₹ {product.price}</h2>
+            <h2 className="text-4xl text-center mb-10">
+              Related Products
+            </h2>
 
-          {isAuth ? (
-            <button onClick={addToCartHandler}>
-              {cartBtnLoading ? <Loader/> : "Add to cart"}
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 text-red-500 mt-6">
-              <LogIn /> Login required
+            <div className="grid md:grid-cols-3 gap-8">
+              {relatedProduct?.map((e)=>(
+                <ProductCard key={e._id} product={e} />
+              ))}
             </div>
-          )}
 
-        </div>
-
-      </motion.div>
-
-      {/* RELATED */}
-      <div className="mt-20 max-w-7xl mx-auto">
-        <h2 className="text-3xl mb-6">Related Products</h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {relatedProduct?.map((p)=>(
-            <Suspense fallback={<LoaderMG />} key={p._id}>
-              <ProductCard product={p} />
-            </Suspense>
-          ))}
-        </div>
+          </div>
+        )}
 
       </div>
-
-    </div>
+    </motion.div>
   );
 }
-
-
-
-
-
-
 
 
 
