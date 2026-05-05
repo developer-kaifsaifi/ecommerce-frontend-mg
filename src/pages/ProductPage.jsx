@@ -41,7 +41,7 @@ export default function ProductPage() {
   const [stock, setStock] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-
+const [cartBtnLoading, setCartBtnLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [updatedImages, setUpdatedImages] = useState(null);
 
@@ -71,9 +71,13 @@ export default function ProductPage() {
     );
   };
 
-  const addToCartHandler = () => {
-    addToCart(id);
-  };
+const addToCartHandler = async () => {
+  setCartBtnLoading(true);
+
+  await addToCart(id);
+
+  setCartBtnLoading(false);
+};
 
   const updateHandler = () => {
     setShow(!show);
@@ -272,12 +276,19 @@ export default function ProductPage() {
 
             {isAuth ? (
               <button
-                onClick={addToCartHandler}
-                className="mt-8 flex items-center gap-3 bg-black text-white px-6 py-3"
-              >
-                <ShoppingBag size={18} />
-                Add To Cart
-              </button>
+  onClick={addToCartHandler}
+  disabled={cartBtnLoading}
+  className="mt-8 flex items-center gap-3 bg-black text-white px-6 py-3 disabled:opacity-70"
+>
+  {cartBtnLoading ? (
+    <Loader className="animate-spin" />
+  ) : (
+    <>
+      <ShoppingBag size={18} />
+      Add To Cart
+    </>
+  )}
+</button>
             ) : (
               <div className="mt-6 flex gap-2 text-red-500">
                 <LogIn /> Login required
