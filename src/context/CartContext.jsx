@@ -30,7 +30,17 @@ export const CartProvider = ({ children }) => {
   }
 
   async function addToCart(product) {
+
+    const token = Cookies.get("token");
+
+    if (!token) {
+      toast.error("Please login");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       const { data } = await axios.post(
         `${server}/cart/add`,
         { product },
@@ -43,10 +53,14 @@ export const CartProvider = ({ children }) => {
 
       toast.success(data.message);
       fetchCart();
+
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Error adding to cart");
+    } finally {
+      setLoading(false);
     }
   }
+
 
   async function updateCart(action, id) {
     try {
