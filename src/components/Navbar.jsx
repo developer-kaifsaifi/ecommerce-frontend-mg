@@ -21,13 +21,15 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
 
-  const { cart } = CartData()
+  const { cart,resetCart } = CartData()
 
   const { isAuth, logoutUser, user } = UserData();
 
   const logoutHandler = () => {
+    resetCart();
     logoutUser(navigate);
     setOpen(false);
+    
   };
 
   return (

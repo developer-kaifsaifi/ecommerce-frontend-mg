@@ -114,6 +114,8 @@ function logoutUser(navigate) {
   path: "/",
   secure: true,
   sameSite: "None"
+
+  
 });
 
 localStorage.clear(); 

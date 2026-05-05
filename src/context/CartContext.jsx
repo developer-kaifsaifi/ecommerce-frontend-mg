@@ -61,6 +61,11 @@ export const CartProvider = ({ children }) => {
     }
   }
 
+  function resetCart() {
+  setCart([]);
+  setTotalItem(0);
+  setSubTotal(0);
+}
 
   async function updateCart(action, id) {
     try {
@@ -96,7 +101,10 @@ export const CartProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    fetchCart();
+      if (!token) {
+    resetCart();
+  } else {
+    fetchCart()}
   }, []);
   return (
     <CartContext.Provider
@@ -109,6 +117,7 @@ export const CartProvider = ({ children }) => {
         setTotalItem,
         updateCart,
         removeFromCart,
+        resetCart,
       }}
     >
       {children}
