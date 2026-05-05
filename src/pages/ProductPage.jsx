@@ -1,4 +1,4 @@
-import React, {
+import  {
   useEffect,
   useState,
   useRef,
@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 
 import { useParams } from "react-router-dom";
-
 import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
@@ -35,14 +34,14 @@ const ProductCard = lazy(() =>
 );
 
 const Input = lazy(() =>
-  import("@/components/ui/input.jsx").then((module) => ({
-    default: module.Input,
+  import("@/components/ui/input.jsx").then((m) => ({
+    default: m.Input,
   }))
 );
 
 const Label = lazy(() =>
-  import("@/components/ui/label.jsx").then((module) => ({
-    default: module.Label,
+  import("@/components/ui/label.jsx").then((m) => ({
+    default: m.Label,
   }))
 );
 
@@ -59,31 +58,20 @@ export default function ProductPage() {
   } = ProductData();
 
   const { addToCart } = CartData();
-
   const { isAuth, user } = UserData();
 
   const [currentImage, setCurrentImage] = useState(0);
-
-  // Admin States
   const [show, setShow] = useState(false);
 
   const [title, setTitle] = useState("");
-
   const [about, setAbout] = useState("");
-
   const [stock, setStock] = useState("");
-
   const [price, setPrice] = useState("");
-
   const [category, setCategory] = useState("");
 
   const [btnLoading, setBtnLoading] = useState(false);
-
-  const [updatedImages, setUpdatedImages] =
-    useState(null);
-
-  const [cartBtnLoading, setCartBtnLoading] =
-    useState(false);
+  const [updatedImages, setUpdatedImages] = useState(null);
+  const [cartBtnLoading, setCartBtnLoading] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -91,565 +79,265 @@ export default function ProductPage() {
     fetchProduct(id);
   }, [id]);
 
-  const nextImage = () => {
-    if (
-      product.images.length - 1 === currentImage
-    ) {
-      setCurrentImage(0);
-    } else {
-      setCurrentImage(currentImage + 1);
-    }
-  };
+  const nextImage = () =>
+    setCurrentImage((p) =>
+      p === product.images.length - 1 ? 0 : p + 1
+    );
 
-  const prevImage = () => {
-    if (currentImage === 0) {
-      setCurrentImage(
-        product.images.length - 1
-      );
-    } else {
-      setCurrentImage(currentImage - 1);
-    }
-  };
+  const prevImage = () =>
+    setCurrentImage((p) =>
+      p === 0 ? product.images.length - 1 : p - 1
+    );
 
   const addToCartHandler = async () => {
     setCartBtnLoading(true);
-
-    try {
-      await addToCart(id);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setCartBtnLoading(false);
-    }
+    await addToCart(id);
+    setCartBtnLoading(false);
   };
 
   const updateHandler = () => {
     setShow(!show);
-
-    setCategory(product.category);
-
     setTitle(product.title);
-
     setAbout(product.about);
-
     setStock(product.stock);
-
     setPrice(product.price);
+    setCategory(product.category);
   };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
+  const submitHandler = async () => {
     setBtnLoading(true);
-
     try {
-      const { data } = await axios.put(
+      await axios.put(
         `${server}/product/${id}`,
-        {
-          title,
-          about,
-          price,
-          stock,
-          category,
-        },
-        {
-          headers: {
-            token: Cookies.get("token"),
-          },
-        }
+        { title, about, price, stock, category },
+        { headers: { token: Cookies.get("token") } }
       );
-
-      toast.success(data.message);
-
+      toast.success("Updated");
       fetchProduct(id);
-
       setShow(false);
-
-      setBtnLoading(false);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message
-      );
-
-      setBtnLoading(false);
+    } catch {
+      toast.error("Error");
     }
+    setBtnLoading(false);
   };
 
   const handleSubmitImage = async (e) => {
     e.preventDefault();
 
-    setBtnLoading(true);
-
-    if (
-      !updatedImages ||
-      updatedImages.length === 0
-    ) {
-      toast.error(
-        "Please select new images."
-      );
-
-      setBtnLoading(false);
-
-      return;
-    }
+    if (!updatedImages) return toast.error("Select images");
 
     const formData = new FormData();
+    Array.from(updatedImages).forEach((f) =>
+      formData.append("files", f)
+    );
 
-    for (
-      let i = 0;
-      i < updatedImages.length;
-      i++
-    ) {
-      formData.append(
-        "files",
-        updatedImages[i]
-      );
-    }
+    setBtnLoading(true);
 
     try {
-      const { data } = await axios.post(
-        `${server}/product/${id}`,
-        formData,
-        {
-          headers: {
-            token: Cookies.get("token"),
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${server}/product/${id}`, formData, {
+        headers: {
+          token: Cookies.get("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      toast.success(data.message);
-
+      toast.success("Images updated");
       fetchProduct(id);
-
       setUpdatedImages(null);
-
+      fileInputRef.current.value = "";
       setCurrentImage(0);
-
-      if (fileInputRef.current)
-        fileInputRef.current.value = "";
-
-      setBtnLoading(false);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message
-      );
-
-      setBtnLoading(false);
+    } catch {
+      toast.error("Upload failed");
     }
+
+    setBtnLoading(false);
   };
 
+  if (loading) return <LoaderMG />;
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen bg-[#f4f1ea] text-[#1d1d1d]"
-    >
-      {loading ? (
-        <LoaderMG />
-      ) : (
-        <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
+    <div className="min-h-screen bg-[#f4f1ea] px-6 py-12">
 
-          {/* Admin Edit */}
-          {user &&
-            user.role === "admin" && (
-              <div className="m-auto mb-10 w-full md:w-[600px]">
+      {/* ADMIN PANEL */}
+      {user?.role === "admin" && (
+        <div className="max-w-md mx-auto mb-10">
 
-                <button
-                  onClick={updateHandler}
-                  className="mb-4 flex bg-[#1d1d1d] px-4 py-3 text-white hover:bg-[#BEA163]"
-                >
-                  {show ? (
-                    <X />
-                  ) : (
-                    <Edit className="mr-2" />
-                  )}
+          <button
+            onClick={updateHandler}
+            className="flex items-center gap-2 px-4 py-2 bg-[#1d1d1d] text-white rounded-lg"
+          >
+            {show ? <X size={18} /> : <Edit size={18} />}
+            {show ? "Close" : "Edit Product"}
+          </button>
 
-                  {show
-                    ? "Close Edit"
-                    : "Edit Product"}
-                </button>
+          {show && (
+            <div className="mt-4 p-5 bg-white border border-[#e7dcc6] rounded-xl shadow-sm space-y-3">
 
-                {show && (
-                  <Suspense
-                    fallback={<LoaderMG />}
-                  >
-                    <div className="space-y-4 border border-[#e7dcc6] bg-white p-6 shadow-sm">
+              <Suspense fallback={null}>
+                <Label>Title</Label>
+                <Input value={title} onChange={(e)=>setTitle(e.target.value)} />
 
-                      <div>
-                        <Label>
-                          Title
-                        </Label>
+                <Label>About</Label>
+                <Input value={about} onChange={(e)=>setAbout(e.target.value)} />
 
-                        <Input
-                          value={title}
-                          onChange={(e) =>
-                            setTitle(
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
+                <Label>Price</Label>
+                <Input value={price} onChange={(e)=>setPrice(e.target.value)} />
 
-                      <div>
-                        <Label>
-                          About
-                        </Label>
+                <Label>Stock</Label>
+                <Input value={stock} onChange={(e)=>setStock(e.target.value)} />
 
-                        <Input
-                          value={about}
-                          onChange={(e) =>
-                            setAbout(
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
+                <Label>Category</Label>
+                <select value={category} onChange={(e)=>setCategory(e.target.value)}>
+                  {categories.map((c)=> <option key={c}>{c}</option>)}
+                </select>
+              </Suspense>
 
-                      <div>
-                        <Label>
-                          Category
-                        </Label>
-
-                        <select
-                          value={category}
-                          onChange={(e) =>
-                            setCategory(
-                              e.target.value
-                            )
-                          }
-                          className="w-full rounded-md border p-2"
-                        >
-                          {categories.map(
-                            (e) => (
-                              <option
-                                value={e}
-                                key={e}
-                              >
-                                {e}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-
-                      <div>
-                        <Label>
-                          Price
-                        </Label>
-
-                        <Input
-                          type="number"
-                          value={price}
-                          onChange={(e) =>
-                            setPrice(
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-
-                      <div>
-                        <Label>
-                          Stock
-                        </Label>
-
-                        <Input
-                          type="number"
-                          value={stock}
-                          onChange={(e) =>
-                            setStock(
-                              e.target.value
-                            )
-                          }
-                        />
-                      </div>
-
-                      <button
-                        onClick={
-                          submitHandler
-                        }
-                        disabled={
-                          btnLoading
-                        }
-                        className="flex w-full items-center justify-center bg-[#BEA163] px-4 py-3 text-white hover:bg-[#1d1d1d]"
-                      >
-                        {btnLoading ? (
-                          <Loader className="animate-spin" />
-                        ) : (
-                          "Update Product"
-                        )}
-                      </button>
-
-                    </div>
-                  </Suspense>
-                )}
-              </div>
-            )}
-
-          {/* Product Section */}
-          {product && (
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 40,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.5,
-              }}
-              className="grid gap-14 lg:grid-cols-2"
-            >
-
-              {/* Images */}
-              <div>
-
-                <div className="relative overflow-hidden border border-[#e7dcc6] bg-white p-5 shadow-sm">
-
-                  <motion.img
-                    loading="eager"
-                    decoding="async"
-                    key={currentImage}
-                    initial={{
-                      opacity: 0,
-                    }}
-                    animate={{
-                      opacity: 1,
-                    }}
-                    transition={{
-                      duration: 0.4,
-                    }}
-                    src={
-                      product?.images?.[
-                        currentImage
-                      ]?.url
-                    }
-                    alt="product"
-                    className="h-[650px] w-full object-cover"
-                  />
-
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-7 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center bg-white/80 shadow-md"
-                  >
-                    <ChevronLeft />
-                  </button>
-
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-7 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center bg-white/80 shadow-md"
-                  >
-                    <ChevronRight />
-                  </button>
-
-                </div>
-
-                {/* Thumbnails */}
-                <div className="mt-5 flex gap-4 overflow-x-auto pb-2">
-
-                  {product?.images?.map(
-                    (img, index) => (
-                      <div
-                        key={index}
-                        onClick={() =>
-                          setCurrentImage(
-                            index
-                          )
-                        }
-                        className={`cursor-pointer overflow-hidden border bg-white p-2 ${
-                          currentImage ===
-                          index
-                            ? "border-[#BEA163]"
-                            : "border-[#e7dcc6]"
-                        }`}
-                      >
-
-                        <img
-                          loading="lazy"
-                          decoding="async"
-                          src={img.url}
-                          alt="thumb"
-                          className="h-24 w-24 object-cover"
-                        />
-
-                      </div>
-                    )
-                  )}
-
-                </div>
-
-              </div>
-
-              {/* Details */}
-              <div className="flex flex-col justify-center">
-
-                <div>
-                  <p className="mb-4 text-xs uppercase tracking-[5px] text-[#8a6a39]">
-                    Mansoori Garment
-                  </p>
-
-                  <h1 className="font-garamond text-6xl leading-none">
-                    {product.title}
-                  </h1>
-                </div>
-
-                <p className="mt-8 text-lg leading-9 text-gray-600 font-manrope">
-                  {product.about}
-                </p>
-
-                <div className="mt-10 flex items-center gap-5">
-
-                  <div>
-                    <p className="mb-2 text-xs uppercase tracking-[4px] text-gray-400">
-                      Price
-                    </p>
-
-                    <h2 className="font-garamond text-6xl">
-                      ₹ {product.price}
-                    </h2>
-                  </div>
-
-                </div>
-
-                <div className="mt-12">
-
-                  {isAuth ? (
-                    <motion.button
-                      whileHover={{
-                        scale: 0.98,
-                      }}
-                      whileTap={{
-                        scale: 0.96,
-                      }}
-                      onClick={
-                        addToCartHandler
-                      }
-                      disabled={
-                        cartBtnLoading
-                      }
-                      className="flex h-16 w-full items-center justify-center gap-4 bg-[#1d1d1d] text-sm uppercase tracking-[4px] text-white hover:bg-[#BEA163]"
-                    >
-
-                      {cartBtnLoading ? (
-                        <Loader className="animate-spin" />
-                      ) : (
-                        <>
-                          <ShoppingBag
-                            size={20}
-                          />
-
-                          Add To Cart
-                        </>
-                      )}
-
-                    </motion.button>
-                  ) : (
-                    <div className="flex items-center gap-4 border border-blue-200 bg-blue-50 p-5 text-blue-700">
-
-                      <LogIn size={20} />
-
-                      <p className="uppercase tracking-[2px]">
-                        Please Login To
-                        Continue
-                      </p>
-
-                    </div>
-                  )}
-
-                </div>
-
-              </div>
-
-            </motion.div>
-          )}
-
-          {/* Related Products */}
-          {relatedProduct?.length >
-            0 && (
-            <div className="mt-28">
-
-              <div className="mb-14 text-center">
-
-                <p className="mb-4 text-xs uppercase tracking-[5px] text-[#8a6a39]">
-                  Explore More
-                </p>
-
-                <h2 className="font-garamond text-6xl">
-                  Related Products
-                </h2>
-
-              </div>
-
-              <div className="grid grid-cols-1 place-items-center gap-x-8 gap-y-14 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-
-                {relatedProduct.map(
-                  (e) => (
-                    <Suspense
-                      key={e._id}
-                      fallback={
-                        <LoaderMG />
-                      }
-                    >
-                      <ProductCard
-                        product={e}
-                      />
-                    </Suspense>
-                  )
-                )}
-
-              </div>
+              <button
+                onClick={submitHandler}
+                className="flex items-center gap-2 px-4 py-2 bg-[#BEA163] text-white rounded-lg"
+              >
+                {btnLoading ? <Loader className="animate-spin"/> : "Update"}
+              </button>
 
             </div>
           )}
-
         </div>
       )}
-    </motion.div>
+
+      {/* MAIN */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="grid lg:grid-cols-2 gap-14 max-w-7xl mx-auto"
+      >
+
+        {/* IMAGE */}
+        <div className="relative">
+
+          <motion.img
+            key={currentImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25 }}
+            src={product?.images?.[currentImage]?.url}
+            className="w-full h-[520px] object-cover rounded-2xl shadow-sm"
+          />
+
+          {/* NAV */}
+          <button
+            onClick={prevImage}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          <button
+            onClick={nextImage}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
+          >
+            <ChevronRight size={18} />
+          </button>
+
+          {/* THUMBS */}
+          <div className="flex gap-3 mt-4 overflow-x-auto">
+            {product.images.map((img, i)=>(
+              <motion.img
+                key={i}
+                whileHover={{ scale: 1.04 }}
+                src={img.url}
+                onClick={()=>setCurrentImage(i)}
+                className="w-20 h-20 rounded-xl object-cover cursor-pointer border"
+              />
+            ))}
+          </div>
+
+          {/* UPLOAD */}
+          {user?.role === "admin" && (
+            <form onSubmit={handleSubmitImage} className="mt-6">
+
+              <input
+                type="file"
+                multiple
+                ref={fileInputRef}
+                onChange={(e)=>setUpdatedImages(e.target.files)}
+              />
+
+              <button className="mt-2 flex items-center gap-2 px-4 py-2 bg-[#1d1d1d] text-white rounded-lg">
+                {btnLoading ? <Loader className="animate-spin"/> : "Upload"}
+              </button>
+
+            </form>
+          )}
+
+        </div>
+
+        {/* DETAILS */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35 }}
+        >
+
+          <h1 className="text-5xl font-garamond text-[#1d1d1d]">
+            {product.title}
+          </h1>
+
+          <p className="mt-6 text-gray-600 leading-8">
+            {product.about}
+          </p>
+
+          <h2 className="mt-6 text-4xl text-[#705023]">
+            ₹ {product.price}
+          </h2>
+
+          {isAuth ? (
+            <motion.button
+              whileHover={{ scale: 0.97 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={addToCartHandler}
+              className="mt-8 flex items-center gap-3 px-6 py-3 bg-[#1d1d1d] text-white rounded-full"
+            >
+              {cartBtnLoading ? (
+                <Loader className="animate-spin" />
+              ) : (
+                <>
+                  <ShoppingBag size={18} />
+                  Add To Cart
+                </>
+              )}
+            </motion.button>
+          ) : (
+            <div className="mt-8 flex items-center gap-2 text-red-500">
+              <LogIn size={18} />
+              Login required
+            </div>
+          )}
+
+        </motion.div>
+
+      </motion.div>
+
+      {/* RELATED */}
+      <div className="mt-24 max-w-7xl mx-auto">
+
+        <h2 className="text-4xl font-garamond text-center mb-10">
+          Related Products
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {relatedProduct.map((p)=>(
+            <Suspense fallback={<LoaderMG />} key={p._id}>
+              <ProductCard product={p} />
+            </Suspense>
+          ))}
+        </div>
+
+      </div>
+
+    </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
