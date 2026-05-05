@@ -1,4 +1,4 @@
-import  {
+import React, {
   useEffect,
   useState,
   useRef,
@@ -31,18 +31,6 @@ import LoaderMG from "../components/LoaderMG.jsx";
 
 const ProductCard = lazy(() =>
   import("../components/ProductCard.jsx")
-);
-
-const Input = lazy(() =>
-  import("@/components/ui/input.jsx").then((m) => ({
-    default: m.Input,
-  }))
-);
-
-const Label = lazy(() =>
-  import("@/components/ui/label.jsx").then((m) => ({
-    default: m.Label,
-  }))
 );
 
 import { categories, server } from "@/main.jsx";
@@ -79,15 +67,27 @@ export default function ProductPage() {
     fetchProduct(id);
   }, [id]);
 
-  const nextImage = () =>
-    setCurrentImage((p) =>
-      p === product.images.length - 1 ? 0 : p + 1
-    );
+  // 🚫 Crash guard
+  if (loading || !product || !product.images) {
+    return <LoaderMG />;
+  }
 
-  const prevImage = () =>
-    setCurrentImage((p) =>
-      p === 0 ? product.images.length - 1 : p - 1
+  // IMAGE NAV
+  const nextImage = () => {
+    if (!product?.images?.length) return;
+
+    setCurrentImage((prev) =>
+      prev === product.images.length - 1 ? 0 : prev + 1
     );
+  };
+
+  const prevImage = () => {
+    if (!product?.images?.length) return;
+
+    setCurrentImage((prev) =>
+      prev === 0 ? product.images.length - 1 : prev - 1
+    );
+  };
 
   const addToCartHandler = async () => {
     setCartBtnLoading(true);
@@ -97,11 +97,12 @@ export default function ProductPage() {
 
   const updateHandler = () => {
     setShow(!show);
-    setTitle(product.title);
-    setAbout(product.about);
-    setStock(product.stock);
-    setPrice(product.price);
-    setCategory(product.category);
+
+    setTitle(product.title || "");
+    setAbout(product.about || "");
+    setStock(product.stock || "");
+    setPrice(product.price || "");
+    setCategory(product.category || "");
   };
 
   const submitHandler = async () => {
@@ -112,11 +113,12 @@ export default function ProductPage() {
         { title, about, price, stock, category },
         { headers: { token: Cookies.get("token") } }
       );
+
       toast.success("Updated");
       fetchProduct(id);
       setShow(false);
     } catch {
-      toast.error("Error");
+      toast.error("Update failed");
     }
     setBtnLoading(false);
   };
@@ -124,7 +126,9 @@ export default function ProductPage() {
   const handleSubmitImage = async (e) => {
     e.preventDefault();
 
-    if (!updatedImages) return toast.error("Select images");
+    if (!updatedImages || updatedImages.length === 0) {
+      return toast.error("Select images");
+    }
 
     const formData = new FormData();
     Array.from(updatedImages).forEach((f) =>
@@ -153,50 +157,34 @@ export default function ProductPage() {
     setBtnLoading(false);
   };
 
-  if (loading) return <LoaderMG />;
-
   return (
     <div className="min-h-screen bg-[#f4f1ea] px-6 py-12">
 
-      {/* ADMIN PANEL */}
+      {/* ADMIN */}
       {user?.role === "admin" && (
         <div className="max-w-md mx-auto mb-10">
 
           <button
             onClick={updateHandler}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1d1d1d] text-white rounded-lg"
+            className="flex gap-2 bg-black text-white px-4 py-2"
           >
-            {show ? <X size={18} /> : <Edit size={18} />}
-            {show ? "Close" : "Edit Product"}
+            {show ? <X /> : <Edit />} Edit
           </button>
 
           {show && (
-            <div className="mt-4 p-5 bg-white border border-[#e7dcc6] rounded-xl shadow-sm space-y-3">
+            <div className="bg-white p-4 mt-4 space-y-3 border">
 
-              <Suspense fallback={null}>
-                <Label>Title</Label>
-                <Input value={title} onChange={(e)=>setTitle(e.target.value)} />
+              <input value={title} onChange={(e)=>setTitle(e.target.value)} />
+              <input value={about} onChange={(e)=>setAbout(e.target.value)} />
+              <input value={price} onChange={(e)=>setPrice(e.target.value)} />
+              <input value={stock} onChange={(e)=>setStock(e.target.value)} />
 
-                <Label>About</Label>
-                <Input value={about} onChange={(e)=>setAbout(e.target.value)} />
+              <select value={category} onChange={(e)=>setCategory(e.target.value)}>
+                {categories.map((c)=> <option key={c}>{c}</option>)}
+              </select>
 
-                <Label>Price</Label>
-                <Input value={price} onChange={(e)=>setPrice(e.target.value)} />
-
-                <Label>Stock</Label>
-                <Input value={stock} onChange={(e)=>setStock(e.target.value)} />
-
-                <Label>Category</Label>
-                <select value={category} onChange={(e)=>setCategory(e.target.value)}>
-                  {categories.map((c)=> <option key={c}>{c}</option>)}
-                </select>
-              </Suspense>
-
-              <button
-                onClick={submitHandler}
-                className="flex items-center gap-2 px-4 py-2 bg-[#BEA163] text-white rounded-lg"
-              >
-                {btnLoading ? <Loader className="animate-spin"/> : "Update"}
+              <button onClick={submitHandler}>
+                {btnLoading ? <Loader /> : "Update"}
               </button>
 
             </div>
@@ -204,12 +192,11 @@ export default function ProductPage() {
         </div>
       )}
 
-      {/* MAIN */}
+      {/* PRODUCT */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-        className="grid lg:grid-cols-2 gap-14 max-w-7xl mx-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="grid lg:grid-cols-2 gap-12 max-w-7xl mx-auto"
       >
 
         {/* IMAGE */}
@@ -219,35 +206,25 @@ export default function ProductPage() {
             key={currentImage}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.25 }}
             src={product?.images?.[currentImage]?.url}
-            className="w-full h-[520px] object-cover rounded-2xl shadow-sm"
+            className="w-full h-[500px] object-cover"
           />
 
-          {/* NAV */}
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
-          >
-            <ChevronLeft size={18} />
+          <button onClick={prevImage} className="absolute left-4 top-1/2 bg-white p-2">
+            <ChevronLeft />
           </button>
 
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
-          >
-            <ChevronRight size={18} />
+          <button onClick={nextImage} className="absolute right-4 top-1/2 bg-white p-2">
+            <ChevronRight />
           </button>
 
-          {/* THUMBS */}
           <div className="flex gap-3 mt-4 overflow-x-auto">
-            {product.images.map((img, i)=>(
-              <motion.img
+            {product?.images?.map((img, i)=>(
+              <img
                 key={i}
-                whileHover={{ scale: 1.04 }}
                 src={img.url}
                 onClick={()=>setCurrentImage(i)}
-                className="w-20 h-20 rounded-xl object-cover cursor-pointer border"
+                className="w-20 h-20 object-cover cursor-pointer"
               />
             ))}
           </div>
@@ -255,7 +232,6 @@ export default function ProductPage() {
           {/* UPLOAD */}
           {user?.role === "admin" && (
             <form onSubmit={handleSubmitImage} className="mt-6">
-
               <input
                 type="file"
                 multiple
@@ -263,70 +239,41 @@ export default function ProductPage() {
                 onChange={(e)=>setUpdatedImages(e.target.files)}
               />
 
-              <button className="mt-2 flex items-center gap-2 px-4 py-2 bg-[#1d1d1d] text-white rounded-lg">
-                {btnLoading ? <Loader className="animate-spin"/> : "Upload"}
+              <button>
+                {btnLoading ? <Loader/> : "Upload"}
               </button>
-
             </form>
           )}
 
         </div>
 
         {/* DETAILS */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.35 }}
-        >
+        <div>
 
-          <h1 className="text-5xl font-garamond text-[#1d1d1d]">
-            {product.title}
-          </h1>
-
-          <p className="mt-6 text-gray-600 leading-8">
-            {product.about}
-          </p>
-
-          <h2 className="mt-6 text-4xl text-[#705023]">
-            ₹ {product.price}
-          </h2>
+          <h1 className="text-4xl">{product.title}</h1>
+          <p className="mt-4">{product.about}</p>
+          <h2 className="mt-4 text-3xl">₹ {product.price}</h2>
 
           {isAuth ? (
-            <motion.button
-              whileHover={{ scale: 0.97 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={addToCartHandler}
-              className="mt-8 flex items-center gap-3 px-6 py-3 bg-[#1d1d1d] text-white rounded-full"
-            >
-              {cartBtnLoading ? (
-                <Loader className="animate-spin" />
-              ) : (
-                <>
-                  <ShoppingBag size={18} />
-                  Add To Cart
-                </>
-              )}
-            </motion.button>
+            <button onClick={addToCartHandler}>
+              {cartBtnLoading ? <Loader/> : "Add to cart"}
+            </button>
           ) : (
-            <div className="mt-8 flex items-center gap-2 text-red-500">
-              <LogIn size={18} />
-              Login required
+            <div className="flex items-center gap-2 text-red-500 mt-6">
+              <LogIn /> Login required
             </div>
           )}
 
-        </motion.div>
+        </div>
 
       </motion.div>
 
       {/* RELATED */}
-      <div className="mt-24 max-w-7xl mx-auto">
+      <div className="mt-20 max-w-7xl mx-auto">
+        <h2 className="text-3xl mb-6">Related Products</h2>
 
-        <h2 className="text-4xl font-garamond text-center mb-10">
-          Related Products
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {relatedProduct.map((p)=>(
+        <div className="grid md:grid-cols-3 gap-6">
+          {relatedProduct?.map((p)=>(
             <Suspense fallback={<LoaderMG />} key={p._id}>
               <ProductCard product={p} />
             </Suspense>
@@ -338,9 +285,6 @@ export default function ProductPage() {
     </div>
   );
 }
-
-
-
 
 
 
