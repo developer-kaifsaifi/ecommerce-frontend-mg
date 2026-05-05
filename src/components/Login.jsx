@@ -17,10 +17,10 @@ export default function Login() {
   const { loginUser, btnLoading } = UserData();
 
   const submitHandler = () => {
-    loginUser(email, navigate);
-  };
+  loginUser(email.trim().toLowerCase(), navigate);
+};
 
-  // Smooth premium mouse parallax
+
  
 
 
@@ -226,9 +226,10 @@ export default function Login() {
 
                   <input
                     value={email}
+                    style={{ textTransform: "lowercase" }}
                     onChange={(e) =>
-                      setEmail(e.target.value)
-                    }
+  setEmail(e.target.value.trim().toLowerCase())
+}
                     type="email"
                     placeholder="Enter your email"
                     className="bg-transparent outline-none w-full text-lg font-manrope"
