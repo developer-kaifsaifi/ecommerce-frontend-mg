@@ -27,7 +27,7 @@ const navigate = useNavigate()
           <div>
 
             <h2 className="text-3xl font-bold font-epilogue mb-6">
-              Mansoori Garment
+              Thread & Grace
             </h2>
 
             <div className="space-y-5 text-gray-300 font-manrope">
@@ -50,7 +50,7 @@ const navigate = useNavigate()
               <div className="flex items-center gap-3">
                 <Mail className="text-[#BEA163]" size={18} />
 
-                <p>info@mansoorigarment.com</p>
+                <p>info@threadandgrace.com</p>
               </div>
 
             </div>
@@ -171,7 +171,7 @@ const navigate = useNavigate()
         <div className="max-w-7xl mx-auto px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-5">
 
           <p className="text-gray-400 text-sm font-manrope text-center md:text-left">
-            Copyright © 2026 Mansoori Garment | All Rights Reserved.
+            Copyright © 2026 Thread & Grace | All Rights Reserved.
           </p>
 
           {/* Payments */}

@@ -261,7 +261,7 @@ fetchCart()
                         <div className="flex-1">
 
                           <p className="mb-2 text-xs uppercase tracking-[4px] text-[#705023]">
-                            Mansoori Garment
+                            Thread & Grace
                           </p>
 
                           <h3 className="font-garamond text-3xl text-[#1d1d1d]">

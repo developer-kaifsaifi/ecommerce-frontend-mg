@@ -38,7 +38,7 @@ export default function ProductCard({ product, latest }) {
 
         {/* Brand */}
         <p className="text-[10px] uppercase tracking-[5px] text-[#8a6a39] font-semibold">
-          Mansoori Garment
+          Thread & Grace
         </p>
 
         {/* Title */}

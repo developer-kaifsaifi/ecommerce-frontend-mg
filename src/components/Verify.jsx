@@ -91,7 +91,7 @@ const handleResendOtp = async () => {
 
             <h1 className="text-6xl leading-tight font-bold font-garamond">
               Login To <br />
-              Mansoori Garment
+              Thread & Grace
             </h1>
 
             <p className="mt-8 text-gray-300 text-lg leading-9 font-manrope max-w-md">

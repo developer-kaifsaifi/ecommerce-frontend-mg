@@ -51,7 +51,7 @@ export default function Navbar() {
           <div className="hidden md:block">
 
             <h2 className="font-epilogue text-xl font-semibold tracking-wide text-white">
-              Mansoori Garment
+              Thread & Grace
             </h2>
 
             <p className="text-xs uppercase tracking-[3px] text-[#BEA163]">

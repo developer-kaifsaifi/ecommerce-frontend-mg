@@ -108,7 +108,7 @@ const Cart = () => {
                   <div className="flex flex-1 flex-col justify-between">
                     <div>
                       <p className="mb-3 text-xs uppercase tracking-[4px] text-[#705023]">
-                        Mansoori Garment
+                        Thread & Grace
                       </p>
                       <h2 className="font-garamond text-5xl leading-none text-[#1d1d1d]">
                         {e.product?.title || "Product Unavailable"}

@@ -96,7 +96,7 @@ const AdminDashboard = () => {
               <div>
 
                 <p className="text-xs uppercase tracking-[4px] text-[#BEA163]">
-                  Mansoori Garment
+                  Thread & Grace
                 </p>
 
                 <h2 className="mt-1 font-garamond text-4xl text-white">

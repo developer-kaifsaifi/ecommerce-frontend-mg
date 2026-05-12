@@ -259,7 +259,7 @@ const OrderPage = () => {
                     </Link>
                     <div className="pt-5">
                       <p className="mb-2 text-xs uppercase tracking-[4px] text-[#705023]">
-                        Mansoori Garment
+                        Thread & Grace
                       </p>
                       <h3 className="font-garamond text-3xl text-[#1d1d1d]">
                         {e.product.title}
@@ -312,7 +312,7 @@ const OrderPage = () => {
         <div className="flex justify-between items-end border-b-2 border-gray-800 pb-6 mb-8">
           <div>
             <h1 className="text-4xl font-garamond font-bold uppercase tracking-widest text-black">
-              Mansoori Garment
+              Thread & Grace
             </h1>
             <p className="text-sm uppercase tracking-widest text-gray-600 mt-1">
               Premium Fashion

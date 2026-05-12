@@ -25,7 +25,7 @@ const NotFound = () => {
             <p className="mt-8 text-lg leading-9 text-gray-600 font-manrope">
               The page you are looking for does not exist or has been
               moved. Continue exploring premium fashion collections at
-              Mansoori Garment.
+               Thread & Grace.
             </p>
 
             {/* Button */}

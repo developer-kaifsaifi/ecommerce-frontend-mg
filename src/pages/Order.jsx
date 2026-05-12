@@ -73,7 +73,7 @@ const Orders = () => {
 
         <p className="mt-8 max-w-2xl text-lg leading-9 text-gray-500 font-manrope">
           Explore our premium collection and place your first
-          order with Mansoori Garment.
+          order with Thread & Grace.
         </p>
 
         <motion.button
@@ -110,7 +110,7 @@ const Orders = () => {
 
         <p className="mt-6 max-w-2xl text-lg leading-9 text-gray-500 font-manrope">
           Track and manage all your premium fashion orders from
-          Mansoori Garment.
+          Thread & Grace.
         </p>
 
       </motion.div>
