@@ -48,17 +48,7 @@ export default function Navbar() {
             className="h-14 w-auto"
           />
 
-          <div className="hidden md:block">
-
-            <h2 className="font-epilogue text-xl font-semibold tracking-wide text-white">
-              Thread & Grace
-            </h2>
-
-            <p className="text-xs uppercase tracking-[3px] text-[#BEA163]">
-              Premium Fashion
-            </p>
-
-          </div>
+          
         </div>
 
         {/* Nav Links */}
